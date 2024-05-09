@@ -1,6 +1,6 @@
 import express from 'express';
 import { hospitalRegister } from "../controllers/hospital.controller.js";
-import { hospitalValidation } from '../validation/hospital.validation.js';
+import { hospitalValidation } from '../utils/validation.js';
 
 
 export const hospitalRoute = express.Router();
