@@ -30,7 +30,7 @@ const ErrorHandlerMiddleware = (err, req, res, next) => {
     }
 
     if (err.code && err.code === 11000) {
-        errMessage = `Duplicate value entered for ${Object.keys(err.keyValue)} field, please choose another value`;
+        errMessage = `User already exist!`;
         errStatus = 400;
     }
  
