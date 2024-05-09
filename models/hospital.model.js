@@ -15,28 +15,28 @@ const hospitalSchema = mongoose.Schema({
         type: String,
         required: [true, 'Phone is required']
     },
-    licence:{
+    hospitalCode: {
         type: String,
-        required: [true, 'Hospital Licence is required']
+        required: [true, 'Hospital code is required']
     },
-    location: {
-        province: {
-            type: String
-        },
-        district: {
-            type: String
-        },
-        sector: {
-            type: String
-        }
+    province: {
+        type: String
     },
-    donators: {
+    district: {
+        type: String
+    },
+    sector: {
         type: String
     },
     role: {
         type: String,
         default: 'hospital',
         required: true
+    },
+    status:{
+        type: String,
+        default: 'Unaproved',
+        enum: ['Unapproved', 'approved']
     }
 },
     {
