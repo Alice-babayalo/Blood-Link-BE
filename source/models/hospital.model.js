@@ -30,6 +30,9 @@ const hospitalSchema = mongoose.Schema({
             type: String
         }
     },
+    donators: {
+        type: String
+    },
     role: {
         type: String,
         default: 'hospital',

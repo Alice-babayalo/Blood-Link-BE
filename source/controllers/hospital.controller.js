@@ -10,7 +10,7 @@ export const hospitalRegister = asyncWrapper ( async (req,res,next) => {
     if (!errors.isEmpty()) {
         return next(new BadRequestError(errors.array()[0].msg));
     }
-    const existingHospital = await hospitalModel.findOne({ hospitalName: req.body.hospitalName });
+    const existingHospital = await hospitalModel.findOne({ email: req.params.email});
     if (existingHospital) {
         return res.status(200).json({ message: "hospital already exists" });
     }
@@ -22,7 +22,7 @@ export const hospitalRegister = asyncWrapper ( async (req,res,next) => {
         "Your request for hospital registration at RBC for Blood Link services in the names of "+req.body.name+"has been received! RBC will send you an approval email within 24 hours!",
     );
     await sendEmail(
-        process.env.USER_EMAIL,
+        "linkblood33@gmail.com",
         "Hospital Registration Request",
         "The hospital in the names of "+req.body.name+"is requesting an approval for Blood Link services. Please consider their registration request"
     );

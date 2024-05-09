@@ -10,7 +10,7 @@ export const sendEmail = (recipient, subject, body) => {
     });
 
     const mailOptions = {
-        from: 'Blood Link" <${process.env.EMAIL_USER}>',
+        from: 'Blood Link" <kinkblood33@gmail.com>',
         to: recipient,
         subject: subject,
         text: body
