@@ -1,19 +1,5 @@
 import express from 'express';
-import { 
-    hospitalRegister, 
-    deleteHospital, 
-    allHospitals, 
-    addHospital, 
-    login, 
-    getHospitalByStatus,
-    getHospitalByDistrict,
-    getHospitalByProvince, 
-    getHospitalBySector, 
-    getHospitalByHospitalCode, 
-    getHospitalByName, 
-    getHospitalById,
-    updateHospitalById
-} from "../controllers/hospital.controller.js";
+import { hospitalRegister } from "../controllers/hospital.controller.js";
 import { hospitalValidation } from '../validation/hospital.validation.js';
 
 
