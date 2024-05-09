@@ -35,7 +35,7 @@ const ErrorHandlerMiddleware = (err, req, res, next) => {
     }
  
     if (err.name === 'Cast Error') {
-        errMessage = `No item found with id: ${err.value}`
+        errMessage = `Not Found`
         errStatus = 404;
     }
 
