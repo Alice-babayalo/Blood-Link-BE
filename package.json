@@ -23,7 +23,7 @@
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.3.4",
     "nodemailer": "^6.9.13",
-    "swagger": "^0.7.5",
+    "swagger": "^0.0.1",
     "swagger-ui-express": "^5.0.0"
   },
   "devDependencies": {
