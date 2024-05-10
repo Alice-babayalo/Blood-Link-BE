@@ -1,0 +1,235 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "Blood Link",
+        "description": "An API for managing sign up, sign in, forgot password and reset password",
+        "version": "1.0.0"
+    },
+    "host": "localhost:911",
+    "basePath": "/api",
+    "schemes": [
+        "http", "https"
+    ],
+    "paths": {
+        "/admin/signup": {
+            "post": {
+                "summary": "RBC worker sign up registration",
+                "description": "add the new user through sign up for the first time in order for simultaneous login whenever needed",
+                "tags": [
+                    "RBC"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/signup"
+                        },
+                        "required": true,
+                        "description": "admin data"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/logIn": {
+            "post": {
+                "summary": "RBC worker login",
+                "description": "The new RBC user logs in whenever needed",
+                "tags": [
+                    "RBC"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/login"
+                        },
+                        "required": true,
+                        "description": "Entre the login credentials"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/verify": {
+            "post": {
+                "summary": "RBC worker sign up account validation",
+                "description": "The user must provide the otp which is the same with the otp sent via email to varify his or her accoubt",
+                "tags": [
+                    "RBC"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/otp"
+                        },
+                        "required": true,
+                        "description": "enter your otp provided from your email account"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/forgotPassword": {
+            "post": {
+                "summary": "RBC worker forgot password",
+                "description": "The user who forgot his or her password will be allowed to change the password using the link provided on his or her email account",
+                "tags": [
+                    "RBC"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "email",
+                        "schema": {
+                            "$ref": "#/definitions/forgotPassword"
+                        },
+                        "required": true,
+                        "description": "Enter your email address"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/resetPassword/": {
+            "post": {
+                "summary": "RBC worker reset password",
+                "description": "RBC enters the new password which replace the old one for future login use",
+                "tags": [
+                    "RBC"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "email",
+                        "schema": {
+                            "$ref": "#/definitions/resetPassword"
+                        },
+                        "required": true,
+                        "description": "enter the new password"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/admin/logout":{
+            "get": {
+                "summary": "RBC user logout",
+                "description": "The RBC worker is now allowed to log out from his or her account on Blood LInk",
+                "tags":["RBC"],
+                "responses": {
+                  "200": {
+                    "description": "successfully logged out from your account",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array"
+                        }
+                      }
+                    }
+                  },
+                  "404": {
+                    "description": "No Pets found"
+                  },
+                  "500": {
+                    "description": "Internal server error"
+                  }
+                }
+            }      
+        }
+      
+    },
+    "tags": [
+        {
+          "name": "RBC",
+          "description": "The administration institution in control of the blood link services and systems"
+        }
+    ],
+    "definitions": {
+        "signup": {
+            "type": "object",
+            "properties": {
+                "username": {
+                    "type": "string",
+                    "required": true,
+                    "description":"The name of the user"
+                },
+                "email": {
+                    "type": "string",
+                    "description":"Tbe email of the user",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "description":"The password to be used while logging in"
+                }
+            }
+        },
+        "login": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "description": "Tbe email of the user",
+                    "required": true
+                },
+                "password": {
+                    "type": "string",
+                    "description": "The password to be used while logging in"
+                }
+            }
+        },
+        "otp": {
+            "type": "object",
+            "properties": {
+                "otp": {
+                    "Type": "string",
+                    "requered": true,
+                    "description": "The otp which was swent to the user email"
+                }
+            }
+        },
+        "forgotPassword": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string",
+                    "default": "@gmail.com"
+                }
+            }
+        },
+        "resetPassword": {
+            "type": "object",
+            "properties": {
+                "password": {
+                    "type": "string",
+                    "required": true
+                }
+            }
+        }
+    }
+}

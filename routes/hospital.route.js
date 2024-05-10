@@ -1,6 +1,19 @@
 import express from 'express';
-import { hospitalRegister } from "../controllers/hospital.controller.js";
-import { hospitalValidation } from '../validation/hospital.validation.js';
+import {
+    hospitalRegister,
+    deleteHospital,
+    allHospitals,
+    addHospital,
+    login,
+    updateHospitalById,
+    getHospitalByDistrict,
+    getHospitalByHospitalCode,
+    getHospitalById, getHospitalByName,
+    getHospitalByProvince,
+    getHospitalByStatus,
+    getHospitalBySector
+} from "../controllers/hospital.controller.js";
+import { hospitalValidation } from '../utils/validation.js';
 
 
 export const hospitalRoute = express.Router();
@@ -9,8 +22,8 @@ hospitalRoute.post('/register', hospitalValidation, hospitalRegister)
 hospitalRoute.delete('/delete/:id', deleteHospital);
 hospitalRoute.get('/list', allHospitals)
 hospitalRoute.post('/add', addHospital)
-hospitalRoute.post('/login',login)
-hospitalRoute.put('/update', )
+hospitalRoute.post('/login', login)
+hospitalRoute.put('/update', updateHospitalById)
 hospitalRoute.get('/getHospitalsByStatus/:status', getHospitalByStatus)
 hospitalRoute.get('/getHospitalsByProvince/:province', getHospitalByProvince)
 hospitalRoute.get('/getHospitalsByDistrict/:district', getHospitalByDistrict)
