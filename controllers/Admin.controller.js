@@ -79,7 +79,7 @@ export const SignUp = asyncWrapper(async (req, res, next) => {
   const savedUser = await newUser.save();
   // console.log(savedUser);
 
-  await sendEmail(req.body.email, "Verify your account", `Your OTP is ${otp}`);
+  await sendEmail(req.body.email, "Verify your account", `Your OTP is ${otp}\n You have five minutes to verify your account.`);
 
   if (savedUser) {
       return res.status(201).json({
@@ -176,9 +176,9 @@ export const forgotPassword= asyncWrapper(async (req, res, next) => {
     }
     const resetToken = generateRandomToken();
     user.resetToken = resetToken;
-    user.resetTokenExpires = Date.now() + 10 * 60 * 1000;
+    user.resetTokenExpires = Date.now() + (10 * 60 * 1000);
     await user.save();
-    const link = `http://localhost:8080/reset-password?token=${resetToken}&id=${user.id}`;
+    const link = `http://localhost:911/reset-password?token=${resetToken}&id=${user.id}`;
     const emailBody = `Click on the link bellow to reset your password\n\n${link}`;
 
     await sendEmail(req.body.email, "Reset your password", emailBody);
