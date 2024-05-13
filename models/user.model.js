@@ -16,8 +16,8 @@ const AdminSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["RBC", "hospital"],
-    default: "RBC",
+    enum: ["user", "hospital"],
+    default: "user",
   },
 
   otp: {
