@@ -164,7 +164,7 @@ export const logout= asyncWrapper(async (req, res, next) => {
   res.clearCookie("token");
   res.status(200).json("Logout Success");
 })
-//forgot password
+
 export const forgotPassword= asyncWrapper(async (req, res, next) => {
   const { email } = req.body;
     const user = await AdminModel.findOne({ email });
@@ -178,7 +178,7 @@ export const forgotPassword= asyncWrapper(async (req, res, next) => {
     user.resetToken = resetToken;
     user.resetTokenExpires = Date.now() + (10 * 60 * 1000);
     await user.save();
-    const link = `http://localhost:911/reset-password?token=${resetToken}&id=${user.id}`;
+    const link = `http://localhost:10000/reset-password?token=${resetToken}&id=${user.id}`;
     const emailBody = `Click on the link bellow to reset your password\n\n${link}`;
 
     await sendEmail(req.body.email, "Reset your password", emailBody);
@@ -187,24 +187,23 @@ export const forgotPassword= asyncWrapper(async (req, res, next) => {
         message: "We sent you a reset password link on your email!",
     });
 })
-//reset password
+
+
 export const resetPassword= asyncWrapper( async (req, res) => {
   const token  = req.params.resetToken;  
-      // Find user by reset token
-      const user = await AdminModel.findOne({ resetToken: token });
+
+  const user = await AdminModel.findOne({ resetToken: token });
       if (!user) {
           return res.status(400).json({ message: 'Invalid or expired token' });
       }
-      // Check if token is expired
       if (user.resetTokenExpires < Date.now()) {
           return res.status(400).json({ message: 'Token has expired' });
       }
 if(token===user.resetToken) {
-  const { password } = req.body;
-      // reset user's password
-      user.password = password;
-      user.resetToken = undefined;
-      user.resetTokenExpires = undefined;
+  const hashedPassword = await bcryptjs.hashSync(req.body.password, 10);
+      user.password = hashedPassword;
+      // user.resetToken = undefined;
+      // user.resetTokenExpires = undefined;
       await user.save();
       return res.status(200).json({ message: 'Password reseted successfully' });}
       else{
