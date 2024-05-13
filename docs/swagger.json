@@ -5,13 +5,13 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "localhost:10000",
+    "host": "https://blood-link-be.onrender.com",
     "basePath": "/api",
     "schemes": [
         "http", "https"
     ],
     "paths": {
-        "/admin/signup": {
+        "/user/signup": {
             "post": {
                 "summary": "RBC worker sign up registration",
                 "description": "add the new user through sign up for the first time in order for simultaneous login whenever needed",
@@ -26,7 +26,7 @@
                             "$ref": "#/definitions/signup"
                         },
                         "required": true,
-                        "description": "admin data"
+                        "description": "user data"
                     }
                 ],
                 "responses": {
@@ -36,7 +36,7 @@
                 }
             }
         },
-        "/admin/logIn": {
+        "/user/logIn": {
             "post": {
                 "summary": "RBC worker login",
                 "description": "The new RBC user logs in whenever needed",
@@ -61,7 +61,7 @@
                 }
             }
         },
-        "/admin/verify": {
+        "/user/verify": {
             "post": {
                 "summary": "RBC worker sign up account validation",
                 "description": "The user must provide the otp which is the same with the otp sent via email to varify his or her accoubt",
@@ -86,7 +86,7 @@
                 }
             }
         },
-        "/admin/forgotPassword": {
+        "/user/forgotPassword": {
             "post": {
                 "summary": "RBC worker forgot password",
                 "description": "The user who forgot his or her password will be allowed to change the password using the link provided on his or her email account",
@@ -111,7 +111,7 @@
                 }
             }
         },
-        "/admin/resetPassword/": {
+        "/user/resetPassword/": {
             "post": {
                 "summary": "RBC worker reset password",
                 "description": "RBC enters the new password which replace the old one for future login use",
@@ -136,7 +136,7 @@
                 }
             }
         },
-        "/admin/logout":{
+        "/user/logout":{
             "get": {
                 "summary": "RBC user logout",
                 "description": "The RBC worker is now allowed to log out from his or her account on Blood LInk",

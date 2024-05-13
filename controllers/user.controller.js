@@ -1,4 +1,4 @@
-import AdminModel from "../models/Admin.model.js";
+import AdminModel from "../models/user.model.js";
 import hospitalModel from "../models/hospital.model.js";
 import jwt from "jsonwebtoken"
 import asyncWrapper from "../middleware/async.js";
