@@ -37,6 +37,9 @@ const hospitalSchema = mongoose.Schema({
         type: String,
         default: 'Unaproved',
         enum: ['Unapproved', 'approved']
+    },
+    password: {
+        type: String
     }
 },
     {

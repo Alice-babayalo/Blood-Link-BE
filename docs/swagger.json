@@ -5,18 +5,18 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "blood-link-be.onrender.com",
+    "host": "http://localhost:10000",
     "basePath": "/api",
     "schemes": [
-        "http", "https"
+        "https", "http"
     ],
     "paths": {
         "/user/signup": {
             "post": {
-                "summary": "RBC worker sign up registration",
+                "summary": "User sign up registration",
                 "description": "add the new user through sign up for the first time in order for simultaneous login whenever needed",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -38,8 +38,8 @@
         },
         "/user/logIn": {
             "post": {
-                "summary": "RBC worker login",
-                "description": "The new RBC user logs in whenever needed",
+                "summary": "User login",
+                "description": "The user logs in whenever needed",
                 "tags": [
                     "RBC"
                 ],
@@ -51,7 +51,7 @@
                             "$ref": "#/definitions/login"
                         },
                         "required": true,
-                        "description": "Entre the login credentials"
+                        "description": "Enter the login credentials"
                     }
                 ],
                 "responses": {
@@ -63,10 +63,10 @@
         },
         "/user/verify": {
             "post": {
-                "summary": "RBC worker sign up account validation",
+                "summary": "User sign up account validation",
                 "description": "The user must provide the otp which is the same with the otp sent via email to varify his or her accoubt",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {

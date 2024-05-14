@@ -3,7 +3,7 @@ import hospitalModel from "../models/hospital.model.js";
 import asyncWrapper from '../middleware/async.js';
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
-import { sendEmail } from "../middleware/sendEmail.js"
+import { sendEmail } from "../middleware/sendEmail.js";
 
 
 export const hospitalRegister = asyncWrapper(async (req, res, next) => {
@@ -77,7 +77,6 @@ export const addHospital = asyncWrapper(async (req, res, next) => {
         hospitalCode,
         email,
         password: hashedPassword,
-        city,
         province,
         role: 'hospital',
         district,
