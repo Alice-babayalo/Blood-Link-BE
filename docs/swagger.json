@@ -5,7 +5,7 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "http://localhost:10000",
+    "host": "blood-link-be.onrender.com",
     "basePath": "/api",
     "schemes": [
         "https", "http"
@@ -41,7 +41,7 @@
                 "summary": "User login",
                 "description": "The user logs in whenever needed",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -88,10 +88,10 @@
         },
         "/user/forgotPassword": {
             "post": {
-                "summary": "RBC worker forgot password",
+                "summary": "User forgot password",
                 "description": "The user who forgot his or her password will be allowed to change the password using the link provided on his or her email account",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -113,10 +113,10 @@
         },
         "/user/resetPassword/": {
             "post": {
-                "summary": "RBC worker reset password",
-                "description": "RBC enters the new password which replace the old one for future login use",
+                "summary": "User reset password",
+                "description": "User enters the new password which replace the old one for future login use",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -138,9 +138,9 @@
         },
         "/user/logout":{
             "get": {
-                "summary": "RBC user logout",
-                "description": "The RBC worker is now allowed to log out from his or her account on Blood LInk",
-                "tags":["RBC"],
+                "summary": "User logout",
+                "description": "The user is now allowed to log out from his or her account on Blood LInk",
+                "tags":["User"],
                 "responses": {
                   "200": {
                     "description": "successfully logged out from your account",
@@ -165,7 +165,7 @@
     },
     "tags": [
         {
-          "name": "RBC",
+          "name": "User",
           "description": "The administration institution in control of the blood link services and systems"
         }
     ],
