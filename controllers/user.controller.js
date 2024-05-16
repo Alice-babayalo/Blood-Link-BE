@@ -135,6 +135,12 @@ export const logIn = asyncWrapper(async (req, res, next) => {
     foundUser = await hospitalModel.findOne({ email: req.body.email });
     return next(new BadRequestError("Invalid email or password!"));
   };
+  if (foundUser.role !== req.body.role) {
+    return res.status(500).send({
+      
+      message: "role don't match",
+    });
+  }
 
 
 
