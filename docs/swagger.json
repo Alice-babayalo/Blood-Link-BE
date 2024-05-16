@@ -8,15 +8,15 @@
     "host": "blood-link-be.onrender.com",
     "basePath": "/api",
     "schemes": [
-        "http", "https"
+        "https", "http"
     ],
     "paths": {
         "/user/signup": {
             "post": {
-                "summary": "RBC worker sign up registration",
+                "summary": "User sign up registration",
                 "description": "add the new user through sign up for the first time in order for simultaneous login whenever needed",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -38,10 +38,10 @@
         },
         "/user/logIn": {
             "post": {
-                "summary": "RBC worker login",
-                "description": "The new RBC user logs in whenever needed",
+                "summary": "User login",
+                "description": "The user logs in whenever needed",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -51,7 +51,7 @@
                             "$ref": "#/definitions/login"
                         },
                         "required": true,
-                        "description": "Entre the login credentials"
+                        "description": "Enter the login credentials"
                     }
                 ],
                 "responses": {
@@ -63,10 +63,10 @@
         },
         "/user/verify": {
             "post": {
-                "summary": "RBC worker sign up account validation",
+                "summary": "User sign up account validation",
                 "description": "The user must provide the otp which is the same with the otp sent via email to varify his or her accoubt",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -88,10 +88,10 @@
         },
         "/user/forgotPassword": {
             "post": {
-                "summary": "RBC worker forgot password",
+                "summary": "User forgot password",
                 "description": "The user who forgot his or her password will be allowed to change the password using the link provided on his or her email account",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -113,10 +113,10 @@
         },
         "/user/resetPassword/": {
             "post": {
-                "summary": "RBC worker reset password",
-                "description": "RBC enters the new password which replace the old one for future login use",
+                "summary": "User reset password",
+                "description": "User enters the new password which replace the old one for future login use",
                 "tags": [
-                    "RBC"
+                    "User"
                 ],
                 "parameters": [
                     {
@@ -138,9 +138,9 @@
         },
         "/user/logout":{
             "get": {
-                "summary": "RBC user logout",
-                "description": "The RBC worker is now allowed to log out from his or her account on Blood LInk",
-                "tags":["RBC"],
+                "summary": "User logout",
+                "description": "The user is now allowed to log out from his or her account on Blood LInk",
+                "tags":["User"],
                 "responses": {
                   "200": {
                     "description": "successfully logged out from your account",
@@ -165,7 +165,7 @@
     },
     "tags": [
         {
-          "name": "RBC",
+          "name": "User",
           "description": "The administration institution in control of the blood link services and systems"
         }
     ],
