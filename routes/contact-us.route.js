@@ -7,6 +7,6 @@ import { contactValidationRules } from '../utils/validation.js';
 const contactRoute = express.Router();
 
 contactRoute.post('/contact', contactValidationRules, createContactMessage);
-contactRoute.get('/contact', listContactMessages);
+contactRoute.get('/listMessage', listContactMessages);
 
 export default contactRoute;
