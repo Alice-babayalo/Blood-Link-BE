@@ -15,9 +15,11 @@ import {
 } from "../controllers/hospital.controller.js";
 import { hospitalValidation } from '../utils/validation.js';
 import { requestBlood, viewAllRequests } from '../controllers/blood.request.js';
+import { authMiddleware } from '../middleware/authorization.js';
 
 
 export const hospitalRoute = express.Router();
+hospitalRoute.use(authMiddleware);
 
 hospitalRoute.post('/register', hospitalValidation, hospitalRegister)
 hospitalRoute.delete('/delete/:id', deleteHospital);

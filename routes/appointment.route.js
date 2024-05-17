@@ -8,9 +8,11 @@ import {
   updateAppointment
 } from '../controllers/appointment.controller.js';
 import { appointmentValidationRules} from '../utils/validation.js';
+import { authMiddleware } from '../middleware/authorization.js';
 
 
 const appointroute = express.Router();
+appointroute.use(authMiddleware);
 
 appointroute.post('/createAppointment', appointmentValidationRules, createAppointment);
 appointroute.get('/getAppointments', listAppointments);

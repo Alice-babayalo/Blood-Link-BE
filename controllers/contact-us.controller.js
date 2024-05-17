@@ -20,7 +20,7 @@ export const createContactMessage = async (req, res, next) => {
 
       const subject = "User message";
       await sendEmail(
-        "linkblood33@gmsil.com",
+        "linkblood33@gmail.com",
         subject,
         req.body.message
       )
