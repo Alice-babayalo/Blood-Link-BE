@@ -4,7 +4,7 @@ import hospitalModel from "../models/hospital.model.js";
 import asyncWrapper from '../middleware/async.js';
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
-import { sendEmail } from "../middleware/sendEmail.js";
+import { sendEmail } from '../utils/sendEmail.js';
 
 
 export const hospitalRegister = asyncWrapper(async (req, res, next) => {
@@ -37,7 +37,7 @@ export const hospitalRegister = asyncWrapper(async (req, res, next) => {
 
 
 export const deleteHospital = asyncWrapper(async (req, res, next) => {
-    const hospital = await hospitalModel.findByIdAndDelete(req.params.id);
+    const hospital = await hospitalModel.findOneAndDelete(req.params.name)
     if (!hospital) {
         res.status(404).json({ message: "Hospital not found" });
     }
@@ -199,4 +199,9 @@ export const getHospitalById = asyncWrapper(async (req, res, next) => {
         message: 'Hospital information retrieved successfully!',
         hospitals: hospital
     })
+});
+export const listHospitals = asyncWrapper(async (req, res, next) => {
+
+    const hospitals = await hospitalModel.find({}, 'name');
+    res.status(200).json({message:"A list of all hospitals is retrieved successfully" ,hospitals});
 });

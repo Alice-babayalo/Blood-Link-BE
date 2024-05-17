@@ -24,7 +24,8 @@ export const createAppointment = async (req, res, next) => {
       sector,
       bloodGroup,
       age,
-      gender
+      gender,
+      bloodGroup
     });
 
     await donor.save();
@@ -36,7 +37,7 @@ export const createAppointment = async (req, res, next) => {
 
 export const listAppointments = async (req, res) => {
   try {
-    const appointments = await Donor.find();
+    const appointments = await Donor.find().poulate('hospital');
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: error.message });
