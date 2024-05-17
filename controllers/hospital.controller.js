@@ -1,9 +1,10 @@
-import jwt from 'jsonwebtoken'
+import jwt from 'jsonwebtoken';
+import bcryptjs from 'bcryptjs';
 import hospitalModel from "../models/hospital.model.js";
 import asyncWrapper from '../middleware/async.js';
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
-import { sendEmail } from "../middleware/sendEmail.js"
+import { sendEmail } from "../middleware/sendEmail.js";
 
 
 export const hospitalRegister = asyncWrapper(async (req, res, next) => {
@@ -20,7 +21,7 @@ export const hospitalRegister = asyncWrapper(async (req, res, next) => {
     await sendEmail(
         req.body.email,
         "Hospital Registration Request",
-        "Your request for hospital registration at RBC for Blood Link services in the names of " + req.body.name + "has been received! RBC will send you an approval email within 24 hours!",
+        "Your request for hospital registration at RBC for Blood Link services in the names of " + req.body.name + " has been received! RBC will send you an approval email within 24 hours!",
     );
     await sendEmail(
         "linkblood33@gmail.com",
@@ -65,35 +66,29 @@ export const addHospital = asyncWrapper(async (req, res, next) => {
     // const password = Math.random().toString(36).slice(-8); // Temporary password - you may want to use a stronger password generator
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@!$*0123456789';
     let password = ''
-    length = 8;
+    let length = 8;
     for (let i = 0; i < length; i++) {
         // the lengthe of the password is assigned to the length in the parameter
         password += characters.charAt(Math.floor(Math.random() * characters.length));
     }
     // Create a new hospital
-    const hashedPassword = await bcrypt.hash(password, 15);
-    const newHospital = new hospitalModel({
-        name,
-        hospitalCode,
-        email,
-        password: hashedPassword,
-        city,
-        province,
-        role: 'hospital',
-        district,
-        sector,
-        status: 'Approved' // Set status to 'Approved' since admin is adding the hospital
-    });
+    const hashedPassword = await bcryptjs.hash(password, 15);
+
+    const newHospital = new hospitalModel(req.body);
+    newHospital.password = hashedPassword;
+    newHospital.status = 'Approved';
     await newHospital.save();
 
     // Send email with login email and password
     await sendEmail(
         email,
         "Welcome to Blood Link System",
-        "Hello" + req.body.name + ", your approval request has been approved! You are now allowed to log in through blood Link for more hospitality services.\nPlease use these credentials to log in\nEmail: " + email + "\nPassword: " + password + "\n"
+        "Dear " + req.body.name + ", your approval request has been approved! You are now allowed to log in through blood Link for more hospitality services.\nPlease use these credentials to log in:\nEmail: " + email + "\nPassword: " + password + "\n"
     );
 
-    res.status(200).json({ message: 'Hospital added successfully. Login credentials sent to your email.' });
+    res.status(200).json({ message: 'Hospital added successfully. Login credentials sent to your email.',
+        newHospital
+     });
 });
 
 
