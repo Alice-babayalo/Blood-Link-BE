@@ -8,7 +8,8 @@
     "host": "blood-link-be.onrender.com",
     "basePath": "/api",
     "schemes": [
-        "https", "http"
+        "https",
+        "http"
     ],
     "paths": {
         "/user/signup": {
@@ -136,91 +137,39 @@
                 }
             }
         },
-        "/user/logout":{
+        "/user/logout": {
             "get": {
                 "summary": "User logout",
                 "description": "The user is now allowed to log out from his or her account on Blood LInk",
-                "tags":["User"],
-                "responses": {
-                  "200": {
-                    "description": "successfully logged out from your account",
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "type": "array"
-                        }
-                      }
-                    }
-                  },
-                  "404": {
-                    "description": "No Pets found"
-                  },
-                  "500": {
-                    "description": "Internal server error"
-                  }
-                }
-            }      
-        },
-        "/contact-us/contact": {
-            "post": {
-                "summary": "User writes a message to the admin",
-                "description": "The user write a message which enable him or her to get some help or write a comment. This is done to communicate with the admin",
                 "tags": [
-                    "Contact-us"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/contact"
-                        },
-                        "required": true,
-                        "description": "Enter your full names, email address and a message that you want to send in the field provided"
-                    }
+                    "User"
                 ],
                 "responses": {
                     "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/contact-us/listMessage":{
-            "get": {
-                "summary": "List of all messages ",
-                "description": "All messages sent to the admin will be retrieved",
-                "tags":["Contact-us"],
-                "responses": {
-                  "200": {
-                    "description": "successfully retrieved all messages",
-                    "content": {
-                      "application/json": {
-                        "schema": {
-                          "type": "array"
+                        "description": "successfully logged out from your account",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
                         }
-                      }
+                    },
+                    "404": {
+                        "description": "No Pets found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
                     }
-                  },
-                  "404": {
-                    "description": "messages found"
-                  },
-                  "500": {
-                    "description": "Internal server error"
-                  }
                 }
-            }
+            }      
         }
-      
+
     },
     "tags": [
         {
           "name": "User",
           "description": "The administration institution in control of the blood link services and systems"
-        },
-        {
-            "name":"Contact-us",
-            "description":"Enable the user to communicate with the admin through sending a message"
         }
     ],
     "definitions": {
@@ -230,16 +179,16 @@
                 "username": {
                     "type": "string",
                     "required": true,
-                    "description":"The name of the user"
+                    "description": "The name of the user"
                 },
                 "email": {
                     "type": "string",
-                    "description":"Tbe email of the user",
+                    "description": "Tbe email of the user",
                     "required": true
                 },
                 "password": {
                     "type": "string",
-                    "description":"The password to be used while logging in"
+                    "description": "The password to be used while logging in"
                 }
             }
         },
@@ -262,7 +211,7 @@
             "properties": {
                 "otp": {
                     "Type": "string",
-                    "requered": true,
+                    "required": true,
                     "description": "The otp which was swent to the user email"
                 }
             }
@@ -282,25 +231,6 @@
                 "password": {
                     "type": "string",
                     "required": true
-                }
-            }
-        },
-        "contact":{
-            "type":"object",
-            "properties":{
-                "fullName":{
-                    "type":"string",
-                    "required":true
-                },
-                "email":{
-                    "type":"string",
-                    "required":true,
-                    "default":"@gmail.com"
-                },
-                "message":{
-                    "type":"string",
-                    "required":true,
-                    "description":"message is written here"
                 }
             }
         }

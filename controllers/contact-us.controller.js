@@ -1,7 +1,7 @@
 import contactModel from "../models/contact-us.model.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
-import { sendEmail } from "../middleware/sendEmail.js";
+import { sendEmail } from "../utils/sendEmail.js";
 
 export const createContactMessage = async (req, res, next) => {
     const errors = validationResult(req);

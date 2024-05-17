@@ -11,18 +11,18 @@ import {
     getHospitalById, getHospitalByName,
     getHospitalByProvince,
     getHospitalByStatus,
-    getHospitalBySector
+    getHospitalBySector,
+    listHospitals
 } from "../controllers/hospital.controller.js";
 import { hospitalValidation } from '../utils/validation.js';
-import { requestBlood, viewAllRequests } from '../controllers/blood.request.js';
-import { authMiddleware } from '../middleware/authorization.js';
-
+import { requestBlood, viewAllRequests,approveRequest } from '../controllers/blood.request.js';
+import authMiddleware from '../middleware/authorization.js'
 
 export const hospitalRoute = express.Router();
 hospitalRoute.use(authMiddleware);
 
 hospitalRoute.post('/register', hospitalValidation, hospitalRegister)
-hospitalRoute.delete('/delete/:id', deleteHospital);
+hospitalRoute.delete('/delete/:name', deleteHospital);
 hospitalRoute.get('/list', allHospitals)
 hospitalRoute.post('/add', hospitalValidation, addHospital)
 hospitalRoute.post('/login', login)
@@ -36,3 +36,5 @@ hospitalRoute.get('/getHospitalBySector/:sector', getHospitalBySector)
 hospitalRoute.get('/getHospitalById/:id', getHospitalById)
 hospitalRoute.post('/bloodRequest', requestBlood)
 hospitalRoute.get('/listOfBloodRequest', viewAllRequests)
+hospitalRoute.get('/approveRequest/:id', approveRequest)
+hospitalRoute.get('/namesOfAllHospitals', listHospitals)

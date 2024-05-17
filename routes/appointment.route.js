@@ -8,7 +8,7 @@ import {
   updateAppointment
 } from '../controllers/appointment.controller.js';
 import { appointmentValidationRules} from '../utils/validation.js';
-import { authMiddleware } from '../middleware/authorization.js';
+import  authMiddleware  from '../middleware/authorization.js';
 
 
 const appointroute = express.Router();

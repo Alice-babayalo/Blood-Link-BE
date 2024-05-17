@@ -24,9 +24,7 @@ export const createDonor = async (req, res, next) => {
       sector,
       bloodGroup,
       age,
-      gender,
-      weight,
-      donationAvailability
+      gender
     });
 
     await donor.save();
@@ -38,7 +36,7 @@ export const createDonor = async (req, res, next) => {
 
 export const listDonors = async (req, res) => {
   try {
-    const appointments = await donorModel.find();
+    const appointments = await Donor.find();
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: error.message });

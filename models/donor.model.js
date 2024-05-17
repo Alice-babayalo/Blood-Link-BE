@@ -1,4 +1,4 @@
-import mongoose from "mongoose"
+import mongoose, { Schema } from "mongoose"
 
 const bloodGroups = ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-'];
 
@@ -64,6 +64,10 @@ const donorSchema =  mongoose.Schema({
     },
     rejectionReason: {
         type: String
+    },
+    donationHospital:{
+        type:Schema.Types.ObjectId,
+        ref:"Hospital"
     }
 }, {
     timestamps: true

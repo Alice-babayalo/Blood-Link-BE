@@ -4,12 +4,29 @@ import mongoose, { Schema } from "mongoose";
 const requestSchema = mongoose.Schema({
     emergencyBloodType: {
         type: String,
-        default: "O",
-        enum: ["O","A","B", "AB"]
+        default: "AB-",
+        enum: ['A+', 'A-', 'B+', 'B-', 'AB+', 'AB-', 'O+', 'O-']
     },
     hospital: {
         type: Schema.Types.ObjectId,
-        ref:"Hospital"
+        ref:"Hospital",
+        required: true
+    },
+    quantity:{
+        type: Number,
+        required: [true,"The quantity of the blood requested is required\nThe quantity of the blood is in Units"],
+        default: 1,
+    },
+    status:{
+        type: String,
+        required: true,
+        enum:[
+            "Sent",
+            "Pending",
+            "Matched",
+            "Fulfilled"
+        ],
+        default:"Sent"
     }
 },
 {
