@@ -44,13 +44,18 @@ const donorSchema =  mongoose.Schema({
         required: true,
         min: [18, 'Minimum age should be 18 years'] // Example validation
     },
+
     gender:{
         type: String,
         enum: ['Male', 'Female', 'Other']
     },
+    weight:{
+        type: Number,
+        required:true
+    },
     donationAvailability:{ 
         type: Date, 
-        default: null
+        required:true
     },
     status: {
         type: String,
