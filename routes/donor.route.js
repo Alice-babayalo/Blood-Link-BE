@@ -1,22 +1,25 @@
 import express from 'express';
 import {
-  createAppointment,
-  listAppointments,
-  getAppointmentById,
-  confirmAppointment,
-  rejectAppointment,
-  updateAppointment
+  createDonor,
+  listDonors,
+  getDonorById,
+ updateDonor,
+ deleteDonor
+
+  
 } from '../controllers/donor.controller.js';
-import {createAppointmentValidationRules } from '../utils/validation.js';
+import {createDonorValidationRules } from '../utils/validation.js';
+import authMiddleware from '../middleware/authorization.js';
 
 const router = express.Router();
 
 // Routes
-router.post('/createAppointments',createAppointmentValidationRules, createAppointment);
-router.get('/getAppointments', listAppointments);
-router.get('/appointments/:id', getAppointmentById);
-router.patch('/confirmAppointments/:id/confirm', confirmAppointment);
-router.patch('/rejectAppointments/:id/reject', rejectAppointment);
-router.put('/update/:id', updateAppointment);
+router.use(authMiddleware);
+router.post('/create',createDonorValidationRules, createDonor);
+router.get('/getDonor', listDonors);
+router.get('/gerDonor/:id', getDonorById);
+
+router.put('/updateDonor/:id', createDonorValidationRules,updateDonor);
+router.delete('/deleteDonor/:id', deleteDonor);
 
 export default router;
