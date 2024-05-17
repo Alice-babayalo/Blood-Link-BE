@@ -186,7 +186,7 @@
                 }
             }
         },
-        "/contact-us/contact":{
+        "/contact-us/listMessage":{
             "get": {
                 "summary": "List of all messages ",
                 "description": "All messages sent to the admin will be retrieved",
