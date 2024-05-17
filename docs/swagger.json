@@ -160,6 +160,56 @@
                   }
                 }
             }      
+        },
+        "/contact-us/contact": {
+            "post": {
+                "summary": "User writes a message to the admin",
+                "description": "The user write a message which enable him or her to get some help or write a comment. This is done to communicate with the admin",
+                "tags": [
+                    "Contact-us"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/contact"
+                        },
+                        "required": true,
+                        "description": "Enter your full names, email address and a message that you want to send in the field provided"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/contact-us/contact":{
+            "get": {
+                "summary": "List of all messages ",
+                "description": "All messages sent to the admin will be retrieved",
+                "tags":["Contact-us"],
+                "responses": {
+                  "200": {
+                    "description": "successfully retrieved all messages",
+                    "content": {
+                      "application/json": {
+                        "schema": {
+                          "type": "array"
+                        }
+                      }
+                    }
+                  },
+                  "404": {
+                    "description": "messages found"
+                  },
+                  "500": {
+                    "description": "Internal server error"
+                  }
+                }
+            }
         }
       
     },
@@ -167,6 +217,10 @@
         {
           "name": "User",
           "description": "The administration institution in control of the blood link services and systems"
+        },
+        {
+            "name":"Contact-us",
+            "description":"Enable the user to communicate with the admin through sending a message"
         }
     ],
     "definitions": {
@@ -228,6 +282,25 @@
                 "password": {
                     "type": "string",
                     "required": true
+                }
+            }
+        },
+        "contact":{
+            "type":"object",
+            "properties":{
+                "fullName":{
+                    "type":"string",
+                    "required":true
+                },
+                "email":{
+                    "type":"string",
+                    "required":true,
+                    "default":"@gmail.com"
+                },
+                "message":{
+                    "type":"string",
+                    "required":true,
+                    "description":"message is written here"
                 }
             }
         }
