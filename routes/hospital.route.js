@@ -19,7 +19,7 @@ import { requestBlood, viewAllRequests,approveRequest } from '../controllers/blo
 import authMiddleware from '../middleware/authorization.js'
 
 export const hospitalRoute = express.Router();
-hospitalRoute.use(authMiddleware);
+// hospitalRoute.use(authMiddleware);
 
 hospitalRoute.post('/register', hospitalValidation, hospitalRegister)
 hospitalRoute.delete('/delete/:name', deleteHospital);
