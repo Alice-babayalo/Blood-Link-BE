@@ -5,8 +5,7 @@ const appointmentSchema = new mongoose.Schema({
   hospital: { type: mongoose.Schema.Types.ObjectId, ref: 'Hospital', required: true },
   date: { type: Date, required: true },
   time: { type: String, required: true },
-  status: { type: String, enum: ['pending', 'confirmed', 'rejected'], default: 'pending' },
-  rejectionReason: { type: String }
+  status: { type: String, enum: ['pending', 'confirmed'], default: 'pending' },
 }, { timestamps: true });
 
 const appointmentModel=new mongoose.model('appointment', appointmentSchema);

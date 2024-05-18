@@ -12,7 +12,7 @@ import  authMiddleware  from '../middleware/authorization.js';
 
 
 const appointroute = express.Router();
-appointroute.use(authMiddleware);
+// appointroute.use(authMiddleware);
 
 appointroute.post('/createAppointment', appointmentValidationRules, createAppointment);
 appointroute.get('/getAppointments', listAppointments);
