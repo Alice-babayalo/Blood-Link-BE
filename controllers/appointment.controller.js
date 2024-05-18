@@ -66,11 +66,12 @@ export const createAppointment = async (req, res, next) => {
       }
       appointment.save();
       res.status(200).json({ message: 'Appointment confirmed successfully', appointment });
-      // await sendEmail(
-      //   email,
-      //   "Appointment Feedback",
-      //   "dear "+""+", We are very pleased to confirm your appointment. Soon you will be matched with the hospital where you will be destineted to donate blood"
-      // )
+      const donorEmail = appointment.donor.email;
+        await sendEmail(
+            donorEmail,
+            "Appointment Confirmation",
+            `Dear ${appointment.donor.fullName},\n\nWe are very pleased to confirm your appointment. Soon you will be matched with the hospital where you will be destined to donate blood.\n\nBest regards,\nBlood-Link Team`
+        );
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -85,12 +86,12 @@ export const createAppointment = async (req, res, next) => {
       }
       appointment.save();
       res.status(200).json({ message: 'Appointment rejected successfully', appointment });
-      // const targetEmail = appointment.donor.email
-      // await sendEmail(
-      //   email,
-      //   "Appointment Feedback",
-      //   "dear "+""+" , We are very sorry to reject your appointment due to the following reason:\n"+rejectionReason
-      // )
+      const donorEmail = appointment.donor.email;
+        await sendEmail(
+            donorEmail,
+            "Appointment Rejection",
+            `Dear ${appointment.donor.fullName},\n\nWe are very sorry to inform you that your appointment has been rejected due to the following reason:\n${rejectionReason}\n\nBest regards,\nBlood-Link Team`
+        );
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
