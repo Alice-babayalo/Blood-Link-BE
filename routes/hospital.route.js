@@ -26,7 +26,7 @@ hospitalRoute.delete('/delete/:name', deleteHospital);
 hospitalRoute.get('/list', allHospitals)
 hospitalRoute.post('/add', hospitalValidation, addHospital)
 hospitalRoute.post('/login', login)
-hospitalRoute.put('/update', updateHospitalById)
+hospitalRoute.put('/update', hospitalValidation, updateHospitalById)
 hospitalRoute.get('/getHospitalsByStatus/:status', getHospitalByStatus)
 hospitalRoute.get('/getHospitalsByProvince/:province', getHospitalByProvince)
 hospitalRoute.get('/getHospitalsByDistrict/:district', getHospitalByDistrict)
