@@ -17,7 +17,7 @@ const router = express.Router();
 router.use(authMiddleware);
 router.post('/create',createDonorValidationRules, createDonor);
 router.get('/getDonor', listDonors);
-router.get('/gerDonor/:id', getDonorById);
+router.get('/getDonor/:id', getDonorById);
 
 router.put('/updateDonor/:id', createDonorValidationRules,updateDonor);
 router.delete('/deleteDonor/:id', deleteDonor);

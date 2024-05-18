@@ -97,7 +97,7 @@
                 "parameters": [
                     {
                         "in": "body",
-                        "name": "email",
+                        "name": "body",
                         "schema": {
                             "$ref": "#/definitions/forgotPassword"
                         },
@@ -122,7 +122,7 @@
                 "parameters": [
                     {
                         "in": "body",
-                        "name": "email",
+                        "name": "body",
                         "schema": {
                             "$ref": "#/definitions/resetPassword"
                         },
@@ -140,7 +140,7 @@
         "/user/logout": {
             "get": {
                 "summary": "User logout",
-                "description": "The user is now allowed to log out from his or her account on Blood LInk",
+                "description": "The user is now allowed to log out from his or her account on Blood Link",
                 "tags": [
                     "User"
                 ],
@@ -163,10 +163,604 @@
                     }
                 }
             }      
+        },
+        "/hospital/bloodRequest": {
+            "post": {
+                "summary": "Request blood ",
+                "description": "The Hospital request blood from Blood Link by specifying the emergency blood request with the blood type that is very essential",
+                "tags": [
+                    "Blood-Request"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/requestBlood"
+                        },
+                        "required": true,
+                        "description": "Enter your blood request"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/hospital/listOfBloodRequest": {
+            "get": {
+                "summary": "List all Blood requests",
+                "description": "The list of all Blood requests is retrieved from the database",
+                "tags": [
+                    "Blood-Request"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all Blood requests",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Blood requests found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
+        "/hospital/approveRequest/{id}": {
+            "post": {
+                "summary": "Approve a hospital blood request",
+                "description": "The administrator may approve the blood request of a hospital by id of the blood request\nAs a result the hospital is sent an email of blood request approval and the blood request status is modified to pending",
+                "tags": [
+                    "Blood-Request"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the blood request to approve",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/hospital/update/{id}": {
+            "post": {
+                "summary": "Update hospital details",
+                "description": "The administrator may change the hospital details",
+                "tags": [
+                    "Hospital"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the hospital to update",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/hospital"
+                        },
+                        "required": true,
+                        "description": "Enter your email address"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/hospital/add": {
+            "post": {
+                "summary": "The admin add a hospital in the database",
+                "description": "The administrator add a new hospital in the database so that it can have access to the services provided by the Blood Link",
+                "tags": [
+                    "Hospital"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/hospital"
+                        },
+                        "required": true,
+                        "description": "Enter hospital detatils here"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/hospital/list": {
+            "get": {
+                "summary": "List all hospitals",
+                "description": "The list of all hospitals is retrieved from the database",
+                "tags": [
+                    "Hospital"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all hospitals",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Hospitals found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
+        "/hospital/namesOfAllHospitals": {
+            "get": {
+                "summary": "List of names of all hospitals",
+                "description": "The list of names of all hospitals is retrieved from the database",
+                "tags": [
+                    "Hospital"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all names of hospitals",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Hospitals found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
+        "/hospital/delete/{id}":{
+            "delete": {
+                "summary": "Delete a hospital",
+                "description": "Administrator may want ot delete a hospital by id from the database",
+                "tags": ["Hospital"],
+                "parameters": [
+                  {
+                    "name": "id",
+                    "in": "path",
+                    "description": "id of the hospital to delete",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "204": {
+                    "description": "hospital deleted"
+                  },
+                  "404": {
+                    "description": "hospital not found"
+                  }
+                }
+              }
+        },
+        "/donor/create": {
+            "post": {
+                "summary": "Adding a donor",
+                "description": "The donor is added in the database for donating blood in Blood Link",
+                "tags": [
+                    "Donor"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/donor"
+                        },
+                        "required": true,
+                        "description": "Enter donor details"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/donor/getDonor": {
+            "get": {
+                "summary": "List all donors registered",
+                "description": "The list of all hospitals is retrieved from the database",
+                "tags": [
+                    "Donor"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all registered donors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "donors found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
+        "/donor/getDonor/{id}": {
+            "post": {
+                "summary": "find donor",
+                "description": "Find the donor by the donor id",
+                "tags": [
+                    "Donor"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the donor to be found",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/donor/updateDonor/{id}": {
+            "post": {
+                "summary": "Update donor details",
+                "description": "The donor may want to change some information about the donor details",
+                "tags": [
+                    "Hospital"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the donor to update",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/donor"
+                        },
+                        "required": true,
+                        "description": "Enter your updated information here"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/donor/deleteDonor/{id}":{
+            "delete": {
+                "summary": "Delete a donor",
+                "description": "Admin may want ot delete a donor by id",
+                "tags": ["Donor"],
+                "parameters": [
+                  {
+                    "name": "id",
+                    "in": "path",
+                    "description": "id of the donor to delete",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "204": {
+                    "description": "donor deleted"
+                  },
+                  "404": {
+                    "description": "donor not found"
+                  }
+                }
+              }
+        },
+        "/appointment/createAppointment": {
+            "post": {
+                "summary": "Donor creates an appointment",
+                "description": "The donor may book an appointment to a certain hospital at a certai time for blood donation",
+                "tags": [
+                    "Appointment"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/appointment"
+                        },
+                        "required": true,
+                        "description": "Enter appointment details"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/getAppointments": {
+            "get": {
+                "summary": "List all appointments",
+                "description": "The list of all appointments is retrieved from the database",
+                "tags": [
+                    "Appointment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all appointments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "appointments found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
+        "/appointment/getappointments/{id}": {
+            "post": {
+                "summary": "find donor",
+                "description": "Find the donor by the appointment id",
+                "tags": [
+                    "Appointment"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the appointment to be found",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/appointments/{id}/confirm": {
+            "post": {
+                "summary": "confirm the appointment",
+                "description": "The administrator may want to confirm the appointment, it is done here",
+                "tags": [
+                    "Appointment"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the appointment to be confirmed",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success in confirming the appointment"
+                    }
+                }
+            }
+        },
+        "/appointment/appointments/{id}/reject": {
+            "post": {
+                "summary": "Reject an appointment",
+                "description": "The administrator may want to reject the appointment, it is done here",
+                "tags": [
+                    "Appointment"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the donor to update",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/rejection reason"
+                        },
+                        "required": true,
+                        "description": "Enter the reason of the appointment rejection"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/updateappointment/{id}": {
+            "post": {
+                "summary": "Update appointment details",
+                "description": "The donor may want to change some information about the appointment details",
+                "tags": [
+                    "Appointment"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the appointment to update",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    },
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/appointment"
+                        },
+                        "required": true,
+                        "description": "Enter your updated appointment information here"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/contact-us/contact": {
+            "post": {
+                "summary": "Create a message to the administrator",
+                "description": "The user is now allowed to ask questions ar write a comment or give a suggestion to the blood link administrator",
+                "tags": [
+                    "Contact-us"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "email",
+                        "schema": {
+                            "$ref": "#/definitions/contact-us"
+                        },
+                        "required": true,
+                        "description": "Enter your email address"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/contact-us/listMessage": {
+            "get": {
+                "summary": "List all user messages",
+                "description": "The list of all user messages is retrieved from the database",
+                "tags": [
+                    "Contact-us"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all appointments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "user messages found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
         }
 
     },
     "tags": [
+        {
+            "name":"Blood-Request"
+        },
+        {
+            "name":"Contact-us",
+            "description":"Any user can send messages to the administrators"
+        },
+        {
+            "name":"Appointment",
+            "description":"The donor books an appointment for blood donation"
+        },
+        {
+            "name":"Donor",
+            "description":"The donor details and credantials in Blood Link project"
+        },
+        {
+            "name":"Hospital",
+            "description":"All credentials required on the hospital user in Blood Link Services"
+        },
         {
           "name": "User",
           "description": "The administration institution in control of the blood link services and systems"
@@ -231,6 +825,181 @@
                 "password": {
                     "type": "string",
                     "required": true
+                }
+            }
+        },
+        "hospital":{
+            "type":"object",
+            "properties": {
+                "name":{
+                    "type": "string",
+                    "required": true
+                },
+                "email":{
+                    "type": "string",
+                    "required": true,
+                    "default":"@gmail.com"
+                },
+                "phone":{
+                    "type": "string",
+                    "required": true
+                },
+                "hospitalCode":{
+                    "type": "string",
+                    "required": true
+                },
+                "province":{
+                    "type":"string"
+                },
+                "district":{
+                    "type":"string"
+                },
+                "sector":{
+                    "type":"string"
+                }
+            }
+        },
+        "requestBlood":{
+            "type":"object",
+            "properties":{
+                "emergencyBloodType":{
+                    "type":"string",
+                    "enum":[
+                        "A+",
+                        "A-",
+                        "B+",
+                        "B-",
+                        "AB+",
+                        "AB-",
+                        "O+",
+                        "O-"
+                    ],
+                    "default":"AB-",
+                    "description":"What is the blood type that is required in the blood request?"
+                },
+                "hospital":{
+                    "type":"string",
+                    "description":"The id of the hospital which is requesting the blood request",
+                    "required":true
+                },
+                "quantity":{
+                    "type":"integer",
+                    "description":"The number of blood units in the blood request",
+                    "default":1
+                }
+            }
+        },
+        "donor":{
+            "type":"object",
+            "properties":{
+                "fullName":{
+                    "type":"string",
+                    "required":true
+                },
+                "mobileNumber":{
+                    "type":"string",
+                    "required":true
+                },
+                "nationalID":{
+                    "type":"string",
+                    "required":true
+                },
+                "email":{
+                    "type":"string",
+                    "required":true,
+                    "default":"@gmail.com"
+                },
+                "province":{
+                    "type":"string",
+                    "required":true
+                },
+                "district":{
+                    "type":"string",
+                    "required":true
+                },
+                "sector":{
+                    "type":"string",
+                    "required":true
+                },
+                "bloodGroup":{
+                    "type":"string",
+                    "required":true,
+                    "enum":[
+                        "A+",
+                        "A-",
+                        "B+",
+                        "B-",
+                        "AB+",
+                        "AB-",
+                        "O+",
+                        "O-"
+                    ]
+                },
+                "age":{
+                    "type":"string",
+                    "required":true,
+                    "description":"The number of years one has. The minimun value of age acceptable is 18 years of age for the blood transfusion"
+                },
+                "gender":{
+                    "type":"string",
+                    "required":true,
+                    "enum":["male","female","other"]
+                },
+                "weight":{
+                    "type":"string",
+                    "required":true
+                },
+                "donationAvailability":{
+                    "type":"string",
+                    "required":true
+                }
+            }
+        },
+        "appointment":{
+            "type":"object",
+            "properties":{
+                "donor":{
+                    "type":"string",
+                    "required":true
+                },
+                "hospital":{
+                    "type":"string",
+                    "required":true
+                },
+                "date":{
+                    "type":"string",
+                    "required":true
+                },
+                "time":{
+                    "type":"string",
+                    "required":true
+                }
+            }
+        },
+        "rejection reason":{
+            "type":"object",
+            "properties":{
+                "rejectionReason":{
+                    "type":"string",
+                    "required":true
+                }
+            }
+        },
+        "contact-us":{
+            "type":"object",
+            "properties":{
+                "fullName":{
+                    "type":"string",
+                    "required":true
+                },
+                "email":{
+                    "type":"string",
+                    "required":true,
+                    "default":"@gmail.com"
+                },
+                "message":{
+                    "type":"string",
+                    "required":true
                 }
             }
         }

@@ -2,6 +2,8 @@ import contactModel from "../models/contact-us.model.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
 import { sendEmail } from "../utils/sendEmail.js";
+import dotenv from 'dotenv'
+dotenv.config
 
 export const createContactMessage = async (req, res, next) => {
     const errors = validationResult(req);
@@ -20,7 +22,7 @@ export const createContactMessage = async (req, res, next) => {
 
       const subject = "User message";
       await sendEmail(
-        "linkblood33@gmail.com",
+        process.env.EMAIL_USER,
         subject,
         req.body.message
       )
