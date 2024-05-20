@@ -9,6 +9,7 @@ const AdminSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
+    unique: true
   },
   password: {
     type: String,
@@ -16,8 +17,8 @@ const AdminSchema = new mongoose.Schema({
   },
   role: {
     type: String,
-    enum: ["donar", "hospital"],
-    default: "donar",
+    enum: ["donor", "hospital", "admin"],
+    default: "donor"
   },
 
   otp: {

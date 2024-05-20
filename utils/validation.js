@@ -38,7 +38,7 @@ export const createDonorValidationRules =
      [
       body('fullName').notEmpty().withMessage('Full name is required'),
       body('mobileNumber').matches(/^\d{10}$/).withMessage('Please enter a valid 10-digit mobile number'),
-      body('nationalID').notEmpty().withMessage('National ID is required'),
+      body('nationalID').notEmpty().matches(/^\d{16}$/).withMessage('National ID is required and make sure that it is a 16 digit number'),
       body('email').isEmail().withMessage('Please enter a valid email address'),
       body('province').notEmpty().withMessage('Province is required'),
       body('district').notEmpty().withMessage('District is required'),
