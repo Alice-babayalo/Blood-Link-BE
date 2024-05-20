@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 
 
-const AdminSchema = new mongoose.Schema({
+const userchema = new mongoose.Schema({
   username: {
     type: String,
     required: true,
@@ -33,8 +33,9 @@ const AdminSchema = new mongoose.Schema({
     type: String,
     required: false
   },
-
-
+  otpExpires:{
+    type: Date
+  },
   resetTokenExpires: {
     type: String,
     required: false
@@ -54,5 +55,5 @@ const AdminSchema = new mongoose.Schema({
 });
 
 
-const AdminModel = mongoose.model("User", AdminSchema);
-export default AdminModel;
+const userModel = mongoose.model("User", userchema);
+export default userModel;

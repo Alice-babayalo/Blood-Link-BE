@@ -1,6 +1,6 @@
 import jwt from "jsonwebtoken";
 import config from "../configs/index.js";
-import AdminModel from "../models/user.model.js";
+import userModel from "../models/user.model.js";
 
 const authMiddleware = async (req, res, next) => {
     try {
@@ -11,7 +11,7 @@ const authMiddleware = async (req, res, next) => {
         }
 
         const decodedToken = jwt.verify(token, config.JWT_SECRET_KEY);
-        const user = await AdminModel.findById(decodedToken.userId);
+        const user = await userModel.findById(decodedToken.userId);
         req.user = user;
 
         // Continue to the next middleware or route handler
