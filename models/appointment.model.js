@@ -8,6 +8,6 @@ const appointmentSchema = new mongoose.Schema({
   status: { type: String, enum: ['pending', 'confirmed'], default: 'pending' },
 }, { timestamps: true });
 
-const appointmentModel=new mongoose.model('appointment', appointmentSchema);
+const appointmentModel = new mongoose.model('appointment', appointmentSchema);
 
 export default appointmentModel;
