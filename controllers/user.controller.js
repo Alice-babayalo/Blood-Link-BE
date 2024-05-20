@@ -1,4 +1,4 @@
-import AdminModel from "../models/user.model.js";
+import userModel from "../models/user.model.js";
 import hospitalModel from "../models/hospital.model.js";
 import jwt from "jsonwebtoken"
 import asyncWrapper from "../middleware/async.js";
@@ -54,7 +54,7 @@ export const SignUp = asyncWrapper(async (req, res, next) => {
   }
 
   // Checking if the user is already in using the email
-  const foundUser = await AdminModel.findOne({ email: req.body.email });
+  const foundUser = await userModel.findOne({ email: req.body.email });
   if (foundUser) {
     return next(new BadRequestError("Email already in use"));
   };
@@ -67,17 +67,18 @@ export const SignUp = asyncWrapper(async (req, res, next) => {
   const otpExpirationDate = new Date().getTime() + (60 * 1000 * 5);
 
   // Recording the user to the database
-  const newUser = new AdminModel({
+  const newUser = new userModel({
     username: req.body.username,
     email: req.body.email,
     password: hashedPassword,
     role: req.body.role,
-    otp
+    otp,
+    otpExpires: otpExpirationDate,
+    verified: false
 
   });
 
   const savedUser = await newUser.save();
-  // console.log(savedUser);
 
   await sendEmail(req.body.email, "Verify your account", `Your OTP is ${otp}\n You have five minutes to verify your account.`);
 
@@ -99,7 +100,7 @@ export const ValidateOpt = asyncWrapper(async (req, res, next) => {
   }
 
   // Checking if the given opt is stored in our database
-  const foundUser = await AdminModel.findOne({ otp: req.body.otp });
+  const foundUser = await userModel.findOne({ otp: req.body.otp });
   if (!foundUser) {
     next(new UnauthorizedError('Authorization denied'));
 
@@ -107,7 +108,8 @@ export const ValidateOpt = asyncWrapper(async (req, res, next) => {
 
   // Checking if the otp is expired or not.
   if (foundUser.otpExpires < new Date().getTime()) {
-    next(new UnauthorizedError('OTP expired'));
+    await userModel.findByIdAndDelete(foundUser._id);
+    next(new UnauthorizedError('OTP expired, Please sign up again'));
   }
 
   // Updating the user to verified
@@ -130,17 +132,11 @@ export const logIn = asyncWrapper(async (req, res, next) => {
   }
 
   // Find user
-  const foundUser = await AdminModel.findOne({ email: req.body.email });
+  const foundUser = await userModel.findOne({ email: req.body.email });
   if (!foundUser) {
     foundUser = await hospitalModel.findOne({ email: req.body.email });
     return next(new BadRequestError("Invalid email or password!"));
   };
-  if (foundUser.role !== req.body.role) {
-    return res.status(500).send({
-      
-      message: "role don't match",
-    });
-  }
 
 
 
@@ -173,7 +169,7 @@ export const logout = asyncWrapper(async (req, res, next) => {
 //forgot password
 export const forgotPassword = asyncWrapper(async (req, res, next) => {
   const { email } = req.body;
-  const user = await AdminModel.findOne({ email });
+  const user = await userModel.findOne({ email });
   if (!user) {
     return res.status(404).json({ message: "User not found" });
   }
@@ -196,7 +192,7 @@ export const forgotPassword = asyncWrapper(async (req, res, next) => {
 //reset password
 export const resetPassword = asyncWrapper(async (req, res) => {
   const token = req.params.resetToken;
-  const user = await AdminModel.findOne({ resetToken: token });
+  const user = await userModel.findOne({ resetToken: token });
   if (!user) {
     return res.status(400).json({ message: 'Invalid or expired token' });
   }
