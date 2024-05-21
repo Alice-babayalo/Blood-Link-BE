@@ -4,7 +4,6 @@ import { validationResult } from 'express-validator';
 
 
 
-
 // Controller methods
 export const createDonor = async (req, res, next) => {
     const errors = validationResult(req);
@@ -12,20 +11,10 @@ export const createDonor = async (req, res, next) => {
         return next(new BadRequestError(errors.array()[0].msg));
     }
   try {
-    const { fullName, mobileNumber, nationalID, email, province, district, sector, bloodGroup, age, gender } = req.body;
+    const { fullName, mobileNumber, nationalID, email, province, district, sector, bloodGroup, age, gender,weight } = req.body;
     
-    const donor = new donorModel({
-      fullName,
-      mobileNumber,
-      nationalID,
-      email,
-      province,
-      district,
-      sector,
-      bloodGroup,
-      age,
-      gender
-    });
+    const donor = new donorModel(req.body);
+
 
     await donor.save();
     res.status(201).json({ message: 'donor created successfully', donor });
@@ -36,7 +25,7 @@ export const createDonor = async (req, res, next) => {
 
 export const listDonors = async (req, res) => {
   try {
-    const appointments = await Donor.find();
+    const appointments = await donorModel.find();
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -60,6 +49,7 @@ export const getDonorById = async (req, res) => {
 export const updateDonor = async (req, res) => {
   try {
     const donor = await donorModel.findByIdAndUpdate(req.params.id, req.body, { new: true });
+    donor.save();
     if (!donor) {
       return res.status(404).json({ message: 'Donor not found' });
     }

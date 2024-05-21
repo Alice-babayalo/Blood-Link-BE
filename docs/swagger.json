@@ -242,7 +242,7 @@
             }
         },
         "/hospital/update/{id}": {
-            "post": {
+            "put": {
                 "summary": "Update hospital details",
                 "description": "The administrator may change the hospital details",
                 "tags": [
@@ -433,7 +433,7 @@
             }      
         },
         "/donor/getDonor/{id}": {
-            "post": {
+            "get": {
                 "summary": "find donor",
                 "description": "Find the donor by the donor id",
                 "tags": [
@@ -458,7 +458,7 @@
             }
         },
         "/donor/updateDonor/{id}": {
-            "post": {
+            "put": {
                 "summary": "Update donor details",
                 "description": "The donor may want to change some information about the donor details",
                 "tags": [
@@ -936,7 +936,7 @@
                     ]
                 },
                 "age":{
-                    "type":"string",
+                    "type":"Number",
                     "required":true,
                     "description":"The number of years one has. The minimun value of age acceptable is 18 years of age for the blood transfusion"
                 },
@@ -946,11 +946,7 @@
                     "enum":["male","female","other"]
                 },
                 "weight":{
-                    "type":"string",
-                    "required":true
-                },
-                "donationAvailability":{
-                    "type":"string",
+                    "type":"Number",
                     "required":true
                 }
             }

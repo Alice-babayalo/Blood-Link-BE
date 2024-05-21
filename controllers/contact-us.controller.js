@@ -20,11 +20,11 @@ export const createContactMessage = async (req, res, next) => {
         message
       });
 
-      const subject = "User message";
+      const subject = "New user message";
       await sendEmail(
         process.env.EMAIL_USER,
         subject,
-        req.body.message
+        "You have a new message from "+fullName+", with the email address of "+email+". The message states: \n"+req.body.message
       )
   
       await contactMessage.save();

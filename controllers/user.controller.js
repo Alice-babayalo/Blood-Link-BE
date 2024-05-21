@@ -13,39 +13,6 @@ import crypto from "crypto"
 
 
 
-
-
-
-// const AdminSignUp = async (req, res) => {
-//     try {
-//       const { email, password, role } = req.body;
-
-//       // Check if the email is already registered
-//       const existingUser = await AdminModel.findOne({ email });
-//       if (existingUser) {
-//         return res.status(400).json({ error: 'User with this email already exists' });
-//       }
-
-//       // Hash the password
-//       // const hashedPassword = await bcrypt.hash(password, 10);
-
-//       // Create a new user document
-//       const newUser = new Admin({
-//         email,
-//         password,
-//         role
-//       });
-
-//       // Save the new user to the database
-//       await newUser.save();
-
-//       // Respond with success message
-//       res.status(201).json({ message: 'User registration successful' });
-//     } catch (error) {
-//       console.error('Error in user sign-up:', error);
-//       res.status(500).json({ error: 'Internal server error' });
-//     }
-//   };
 export const SignUp = asyncWrapper(async (req, res, next) => {
   // Validation
   const errors = validationResult(req);
@@ -117,7 +84,7 @@ export const ValidateOpt = asyncWrapper(async (req, res, next) => {
   const savedUser = await foundUser.save();
 
   if (savedUser) {
-    return res.status(201).json({
+    return res.status(200).json({
       message: "User account verified!",
       user: savedUser
     });
