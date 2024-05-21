@@ -34,5 +34,5 @@ import asyncWrapper from "./async.js";
             req.body.status = 'rejected';
             return res.status(200).json({ message: 'Appointment date is in the past. Status updated to rejected.'});
         }
-
+        next()
  })
