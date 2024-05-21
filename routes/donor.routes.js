@@ -9,7 +9,7 @@ import {
   
 } from '../controllers/donor.controller.js';
 import {createDonorValidationRules } from '../utils/validation.js';
-import { getAge } from '../utils/helperFuntion.js';
+import { getAge } from '../middleware/helperFuntion.js';
 import authMiddleware from '../middleware/authorization.js';
 import { get } from 'mongoose';
 

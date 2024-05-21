@@ -83,6 +83,6 @@ donorSchema.pre('save', function (next) {
     next();
 });
 
-const donorModel = mongoose.model('donor', donorSchema);
+const donorModel = mongoose.model('Donor', donorSchema);
 
 export default donorModel;

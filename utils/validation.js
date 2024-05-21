@@ -50,10 +50,10 @@ export const createDonorValidationRules =
     ];
 
 export const appointmentValidationRules = [
-    body('donorId').notEmpty().withMessage('Donor ID is required').isMongoId().withMessage('Invalid Donor ID format'),
+    body('donor').notEmpty().withMessage('Donor ID is required').isMongoId().withMessage('Invalid Donor ID format'),
     body('date').notEmpty().withMessage('Date is required').isISO8601().withMessage('Invalid date format'),
     body('time').notEmpty().withMessage('Time is required').matches(/^([01]\d|2[0-3]):?([0-5]\d)$/).withMessage('Invalid time format'),
-    body('hospitalName').notEmpty().withMessage('Hospital name is required'),
+    body('hospital').notEmpty().withMessage('Hospital name is required').isMongoId().withMessage('Invalid Donor ID format'),
     body('rejectionReason').optional().isString().withMessage('Rejection reason must be a string')
 ];
 

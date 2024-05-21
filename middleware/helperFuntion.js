@@ -1,4 +1,4 @@
-import asyncWrapper from "../middleware/async.js";
+import asyncWrapper from "./async.js";
 
   export const getAge = asyncWrapper(async (req, res, next) => {
 
@@ -25,3 +25,14 @@ import asyncWrapper from "../middleware/async.js";
     next();
   })
   
+
+ export const validateAppointmentDate = asyncWrapper ( async (req, res, next) => {
+  const currentDate = new Date();
+        const appointmentDate = new Date(req.body.date);
+
+        if (appointmentDate < currentDate) {
+            req.body.status = 'rejected';
+            return res.status(200).json({ message: 'Appointment date is in the past. Status updated to rejected.'});
+        }
+
+ })
