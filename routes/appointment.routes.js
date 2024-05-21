@@ -8,17 +8,18 @@ import {
   updateAppointment
 } from '../controllers/appointment.controller.js';
 import { appointmentValidationRules} from '../utils/validation.js';
+import { validateAppointmentDate } from '../middleware/helperFuntion.js';
 import  authMiddleware  from '../middleware/authorization.js';
 
 
 const appointroute = express.Router();
 // appointroute.use(authMiddleware);
 
-appointroute.post('/createAppointment', appointmentValidationRules, createAppointment);
+appointroute.post('/createAppointment', appointmentValidationRules, validateAppointmentDate, createAppointment);
 appointroute.get('/getAppointments', listAppointments);
 appointroute.get('/getappointments/:id', getAppointmentById);
 appointroute.put('/appointments/:id/confirm', confirmAppointment);
 appointroute.put('/appointments/:id/reject', rejectAppointment);
-appointroute.put('/updateappointment/:id', appointmentValidationRules, updateAppointment);
+appointroute.put('/updateappointment/:id', appointmentValidationRules, validateAppointmentDate, updateAppointment);
 
 export default appointroute;

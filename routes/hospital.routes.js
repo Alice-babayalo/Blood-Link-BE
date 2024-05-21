@@ -21,8 +21,8 @@ import authMiddleware from '../middleware/authorization.js'
 export const hospitalRoute = express.Router();
 // hospitalRoute.use(authMiddleware);
 
-hospitalRoute.post('/register', hospitalValidation, hospitalRegister)
-hospitalRoute.delete('/delete/:name', deleteHospital);
+// hospitalRoute.post('/register', hospitalValidation, hospitalRegister)
+hospitalRoute.delete('/delete/:id', deleteHospital);
 hospitalRoute.get('/list', allHospitals)
 hospitalRoute.post('/add', hospitalValidation, addHospital)
 hospitalRoute.post('/login', login)

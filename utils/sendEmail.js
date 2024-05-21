@@ -11,7 +11,7 @@ export const sendEmail=(receipt,subject,body)=>{
     }
  })
  const mailOptions = {
-    from: '"Blood-Link" <benigneniyonizera58@gmail.com>',
+    from: '"Blood Link" <Blood Link Rwanda>',
     to: receipt,
     subject: subject,
     text: body

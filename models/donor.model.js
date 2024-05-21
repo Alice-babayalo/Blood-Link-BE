@@ -42,7 +42,7 @@ const donorSchema =  mongoose.Schema({
     age:{
         type: Number,
         required: true,
-        min: [18, 'Minimum age should be 18 years'] // Example validation
+        min: [18, 'Minimum age should be 18 years'] 
     },
 
     gender:{
@@ -51,7 +51,8 @@ const donorSchema =  mongoose.Schema({
     },
     weight:{
         type: Number,
-        required:true
+        required:true,
+        min: [50, 'Weight must be at least 50 kg']
     },
     status: {
         type: String,
@@ -60,15 +61,28 @@ const donorSchema =  mongoose.Schema({
     },
     rejectionReason: {
         type: String
-    },
-    donationHospital:{
-        type:Schema.Types.ObjectId,
-        ref:"Hospital"
     }
 }, {
     timestamps: true
 });
 
-const donorModel = mongoose.model('donor', donorSchema);
+donorSchema.pre('save', function (next) {
+    const donor = this;
+    const nationalID = donor.nationalID;
+
+    if (nationalID && nationalID.length === 16) {
+        const sixthDigit = nationalID.charAt(5);
+
+        if (sixthDigit === '8') {
+            donor.gender = 'Male';
+        } else if (sixthDigit === '7') {
+            donor.gender = 'Female';
+        }
+    }
+
+    next();
+});
+
+const donorModel = mongoose.model('Donor', donorSchema);
 
 export default donorModel;

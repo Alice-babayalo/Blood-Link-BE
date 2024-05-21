@@ -7,39 +7,35 @@ import { validationResult } from 'express-validator';
 import { sendEmail } from "../utils/sendEmail.js";
 
 export const createAppointment = async (req, res, next) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty()) {
-      return next(new BadRequestError(errors.array()[0].msg));
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return next(new BadRequestError(errors.array()[0].msg));
+  }
+
+  try {
+    const { donor, date, time, hospital } = req.body;
+
+    const donorApp = await donorModel.findById(donor);
+    if (!donorApp) {
+      return next(new BadRequestError('Donor not found'));
     }
-    try {
-      const { donorName, date, time, hospitalName } = req.body;
-      const donor = await donorModel.findOne({fullName: donorName});
-      if (!donor) {
-        return next(new BadRequestError('Donor not found'));
-      }
-  
-      const hospital = await hospitalModel.findOne({ name: hospitalName });
-      if (!hospital) {
-        return next(new BadRequestError('Hospital not found'));
-      }
-  
-      const appointment = new appointmentModel({
-        donor: donor._id,
-        date,
-        time,
-        hospital: hospital._id,
-        status: 'pending'
-      }).populate('donor', 'hospital');
-      await appointment.save();
-      res.status(201).json({ message: 'Appointment created successfully', appointment });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
+
+    const hospitalApp = await hospitalModel.findById(hospital);
+    if (!hospitalApp) {
+      return next(new BadRequestError('Hospital not found'));
     }
-  };
-  
+
+    const appointment = await appointmentModel.create(req.body);
+    
+
+    res.status(201).json({ message: 'Appointment created successfully', appointment });
+  } catch (error) {
+    next(error);
+  }
+};  
   export const listAppointments = async (req, res) => {
     try {
-      const appointments = await appointmentModel.find().populate('donor').populate('hospital');
+      const appointments = await appointmentModel.find({}).populate('hospital').populate('donor');
       res.status(200).json(appointments);
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -58,9 +54,12 @@ export const createAppointment = async (req, res, next) => {
     }
   };
   
-  export const confirmAppointment = async (req, res) => {
+  export const confirmAppointment = async (req, res, next) => {
     try {
-      const appointment = await appointmentModel.findByIdAndUpdate(req.params.id, { status: 'confirmed' }, { new: true });
+      const appointment = await appointmentModel.findByIdAndUpdate(req.params.id, { status: 'confirmed' }, { new: true }).populate('donor').populate('hospital');
+      if (appointment.status === 'confirmed') {
+        return next(new BadRequestError('Appointment is already confirmed'));
+      }
       if (!appointment) {
         return res.status(404).json({ message: 'Appointment not found' });
       }
@@ -80,7 +79,7 @@ export const createAppointment = async (req, res, next) => {
   export const rejectAppointment = async (req, res) => {
     try {
       const { rejectionReason } = req.body;
-      const appointment = await appointmentModel.findByIdAndUpdate(req.params.id, { status: 'rejected', rejectionReason }, { new: true });
+      const appointment = await appointmentModel.findByIdAndUpdate(req.params.id, { status: 'rejected', rejectionReason }, { new: true }).populate('donor').populate('hospital');
       if (!appointment) {
         return res.status(404).json({ message: 'Appointment not found' });
       }
