@@ -217,7 +217,7 @@
             }      
         },
         "/hospital/approveRequest/{id}": {
-            "post": {
+            "get": {
                 "summary": "Approve a hospital blood request",
                 "description": "The administrator may approve the blood request of a hospital by id of the blood request\nAs a result the hospital is sent an email of blood request approval and the blood request status is modified to pending",
                 "tags": [
@@ -595,7 +595,7 @@
             }
         },
         "/appointment/appointments/{id}/confirm": {
-            "post": {
+            "put": {
                 "summary": "confirm the appointment",
                 "description": "The administrator may want to confirm the appointment, it is done here",
                 "tags": [
@@ -620,7 +620,7 @@
             }
         },
         "/appointment/appointments/{id}/reject": {
-            "post": {
+            "put": {
                 "summary": "Reject an appointment",
                 "description": "The administrator may want to reject the appointment, it is done here",
                 "tags": [
@@ -654,7 +654,7 @@
             }
         },
         "/appointment/updateappointment/{id}": {
-            "post": {
+            "put": {
                 "summary": "Update appointment details",
                 "description": "The donor may want to change some information about the appointment details",
                 "tags": [
@@ -743,7 +743,8 @@
     },
     "tags": [
         {
-            "name":"Blood-Request"
+            "name":"Blood-Request",
+            "description":"The Hospital request blood from Blood Link by specifying the emergency blood request with the blood type that is very essential"
         },
         {
             "name":"Contact-us",
@@ -778,7 +779,8 @@
                 "email": {
                     "type": "string",
                     "description": "Tbe email of the user",
-                    "required": true
+                    "required": true,
+                    "default":"@gmail.com"
                 },
                 "password": {
                     "type": "string",
@@ -792,7 +794,8 @@
                 "email": {
                     "type": "string",
                     "description": "Tbe email of the user",
-                    "required": true
+                    "required": true,
+                    "default":"@gmail.com"
                 },
                 "password": {
                     "type": "string",
@@ -815,7 +818,8 @@
             "properties": {
                 "email": {
                     "type": "string",
-                    "default": "@gmail.com"
+                    "default": "@gmail.com",
+                    "description":"the email to be sent the link to reset one's password"
                 }
             }
         },
@@ -824,7 +828,8 @@
             "properties": {
                 "password": {
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "description":"The new password which replace the old forgotten password"
                 }
             }
         },
@@ -833,29 +838,36 @@
             "properties": {
                 "name":{
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "description":"The name of the hospital"
                 },
                 "email":{
                     "type": "string",
                     "required": true,
-                    "default":"@gmail.com"
+                    "default":"@gmail.com",
+                    "description":"The email used by the hospital"
                 },
                 "phone":{
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "description":"The mobile number or the telephone number used by the hospital"
                 },
                 "hospitalCode":{
                     "type": "string",
-                    "required": true
+                    "required": true,
+                    "description":"The initial code on the licence of the hospital"
                 },
                 "province":{
-                    "type":"string"
+                    "type":"string",
+                    "description":"The province location of the hospital"
                 },
                 "district":{
-                    "type":"string"
+                    "type":"string",
+                    "description":"The district location of the hospital"
                 },
                 "sector":{
-                    "type":"string"
+                    "type":"string",
+                    "description":"The sector location of the hospital"
                 }
             }
         },
@@ -883,7 +895,7 @@
                     "required":true
                 },
                 "quantity":{
-                    "type":"integer",
+                    "type":"Number",
                     "description":"The number of blood units in the blood request",
                     "default":1
                 }
@@ -894,32 +906,39 @@
             "properties":{
                 "fullName":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The donor names"
                 },
                 "mobileNumber":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The mobile number of the donor"
                 },
                 "nationalID":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The national id number which is made up of 19 digits"
                 },
                 "email":{
                     "type":"string",
                     "required":true,
-                    "default":"@gmail.com"
+                    "default":"@gmail.com",
+                    "description":"The email of the donor"
                 },
                 "province":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The province location of the donor"
                 },
                 "district":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The district location of the donor"
                 },
                 "sector":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The sector location of the donor"
                 },
                 "bloodGroup":{
                     "type":"string",
@@ -933,7 +952,8 @@
                         "AB-",
                         "O+",
                         "O-"
-                    ]
+                    ],
+                    "description":"The blood type of the donor"
                 },
                 "age":{
                     "type":"Number",
@@ -943,11 +963,13 @@
                 "gender":{
                     "type":"string",
                     "required":true,
-                    "enum":["male","female","other"]
+                    "enum":["male","female","other"],
+                    "description":"The gender of the donor"
                 },
                 "weight":{
                     "type":"Number",
-                    "required":true
+                    "required":true,
+                    "description":"The weight of the donor"
                 }
             }
         },
@@ -956,19 +978,23 @@
             "properties":{
                 "donor":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The id of the donor to book the appointment"
                 },
                 "hospital":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The id of the hospital to be involved in the donation appointment"
                 },
                 "date":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The preferable date for the appointment"
                 },
                 "time":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The time preferable for the donation appointment"
                 }
             }
         },
@@ -977,7 +1003,8 @@
             "properties":{
                 "rejectionReason":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The reason why the donation appointment was rejected"
                 }
             }
         },
@@ -986,16 +1013,19 @@
             "properties":{
                 "fullName":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The name of the user who wants to send a message to the administrator"
                 },
                 "email":{
                     "type":"string",
                     "required":true,
-                    "default":"@gmail.com"
+                    "default":"@gmail.com",
+                    "description":"The email of the user who wants to send a message to the administrator"
                 },
                 "message":{
                     "type":"string",
-                    "required":true
+                    "required":true,
+                    "description":"The message to be sent to the administrator from the user"
                 }
             }
         }

@@ -37,7 +37,7 @@ export const hospitalRegister = asyncWrapper(async (req, res, next) => {
 
 
 export const deleteHospital = asyncWrapper(async (req, res, next) => {
-    const hospital = await hospitalModel.findOneAndDelete(req.params.name)
+    const hospital = await hospitalModel.findByIdAndDelete(req.params.id)
     if (!hospital) {
         res.status(404).json({ message: "Hospital not found" });
     }
