@@ -62,3 +62,9 @@ export const contactValidationRules = [
     body('email').isEmail().withMessage('Please enter a valid email address'),
     body('message').notEmpty().withMessage('Message is required')
 ];
+
+export const matchDonorValidationRules = [
+    body('donorId').notEmpty().withMessage('Donor ID is required').isMongoId().withMessage('Invalid Donor ID format'),
+    body('requestId').notEmpty().withMessage('Request ID is required').isMongoId().withMessage('Invalid Request ID format'),
+    body('appointmentId').notEmpty().withMessage('Appointment ID is required').isMongoId().withMessage('Invalid Appointment ID')
+  ];

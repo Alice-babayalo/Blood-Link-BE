@@ -2,7 +2,9 @@ import contactModel from "../models/contact-us.model.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
 import { sendEmail } from "../utils/sendEmail.js";
+import asyncWrapper from "../middleware/async.js";
 import dotenv from 'dotenv'
+import { json } from "express";
 dotenv.config
 
 export const createContactMessage = async (req, res, next) => {
@@ -42,3 +44,15 @@ export const createContactMessage = async (req, res, next) => {
       res.status(500).json({ error: error.message });
     }
   };
+
+
+export const deleteMessage = asyncWrapper(async (req, res, next) => {
+  const msge = await contactModel.findByIdAndDelete(req.params.id);
+  // if (!msge) {
+  //   res.status(404).json({ message: "message not found" });
+  // }
+  return res.status(200), json({
+    message: "Message deleted successfully",
+    msge
+  })
+})

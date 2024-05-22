@@ -738,6 +738,32 @@
                     }
                 }
             }      
+        },
+        "/contact-us/delete/{id}":{
+          "delete": {
+            "summary": "Delete a message by ID",
+            "description": "Delete a nessage by the message ID",
+            "tags": ["Contact-us"],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the message to delete",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "message deleted"
+              },
+              "404": {
+                "description": "message not found"
+              }
+            }
+          }
         }
 
     },
