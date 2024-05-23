@@ -712,6 +712,31 @@
                 }
             }
         },
+        "/admin/match-donor":{
+            "post": {
+                "summary": "The administrator matches the donor with the hospital",
+                "description": "The administrator matches the donor with the hospital",
+                "tags": [
+                    "admin"
+                ],
+                "parameters": [
+                    {
+                        "in": "body",
+                        "name": "body",
+                        "schema": {
+                            "$ref": "#/definitions/match"
+                        },
+                        "required": true,
+                        "description": "Enter your essential credentials"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
         "/contact-us/listMessage": {
             "get": {
                 "summary": "List all user messages",
@@ -738,6 +763,32 @@
                     }
                 }
             }      
+        },
+        "/contact-us/delete/{id}":{
+          "delete": {
+            "summary": "Delete a message by ID",
+            "description": "Delete a nessage by the message ID",
+            "tags": ["Contact-us"],
+            "parameters": [
+              {
+                "name": "id",
+                "in": "path",
+                "description": "ID of the message to delete",
+                "required": true,
+                "schema": {
+                  "type": "string"
+                }
+              }
+            ],
+            "responses": {
+              "204": {
+                "description": "message deleted"
+              },
+              "404": {
+                "description": "message not found"
+              }
+            }
+          }
         }
 
     },
@@ -1026,6 +1077,15 @@
                     "type":"string",
                     "required":true,
                     "description":"The message to be sent to the administrator from the user"
+                }
+            }
+        },
+        "match":{
+            "type":"object",
+            "properties":{
+                "requestId":{
+                    "type":"string",
+                    "description":"The id of the blood request from a hospital"
                 }
             }
         }
