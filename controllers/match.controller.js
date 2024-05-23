@@ -22,22 +22,22 @@ export const searchAvailableDonors = asyncWrapper (async (req, res, next) => {
 });
 
 
-export const matchDonorToRequest = async (req, res) => {
+export const mathDonorToRequest = async (req, res) => {
   const { donorId, requestId } = req.body;
 
   try {
-    const donor = await Donor.findById(donorId);
-    const request = await HospitalRequest.findById(requestId).populate('hospital');
+    const donor = await donorModel.findById(donorId);
+    const request = await requestModel.findById(requestId).populate('hospital');
 
     if (!donor || !request) {
       return res.status(404).json({ message: 'Donor or Request not found' });
     }
 
-    const appointment = new Appointment({
+    const appointment = new appointmentModel({
       donor: donorId,
       hospital: request.hospital._id,
       date: donor.donationAvailability,
-      time: '09:00', // default time
+      time: '09:00',
       status: 'confirmed'
     });
 
@@ -52,7 +52,7 @@ export const matchDonorToRequest = async (req, res) => {
   }
 };
 
-*/
+
 export const matchDonorToRequest = asyncWrapper(async (req, res, next) => {
   const { requestId, donorId, appointmentId } = req.body;
 
@@ -111,3 +111,86 @@ export const matchDonorToRequest = asyncWrapper(async (req, res, next) => {
 
 
 });
+*/
+export const matchDonorsToRequest = asyncWrapper(async (req, res, next) => {
+
+  const { requestId } = req.body;
+
+  const bloodRequest = await requestModel.findById(requestId).populate('hospital');
+  if (!bloodRequest) {
+    return next(new BadRequestError('Hospital blood request not found'));
+  }
+
+
+  const donors = await donorModel.find({
+    bloodGroup: bloodRequest.emergencyBloodType,
+    status: 'pending'
+  });
+
+
+  if (donors.length === 0) {
+    return next(new BadRequestError('There is no donor with the same blood type who is interested in donating blood'));
+  }
+
+
+  for (const donor of donors) {
+    
+    const appointments = await appointmentModel.find({
+      donor: donor._id,
+      hospital: bloodRequest.hospital._id,
+      status: 'pending',
+      date: { $gte: new Date() }
+    }).populate('hospital').populate('donor');
+
+
+    if (appointments.length > 0) {
+      const sortedAppointments = appointments.sort((a, b) => new Date(a.date) - new Date(b.date));
+      const appointment = sortedAppointments[0];
+
+      appointment.status = 'confirmed';
+      await appointment.save();
+
+      bloodRequest.status = 'Matched';
+      bloodRequest.quantity -= 1;
+    
+      if (bloodRequest.quantity <= 0) {
+        return res.status(200).json({message: "Blood not requuested by any hospital"})
+      }
+      
+      await bloodRequest.save();
+
+      donorModel.status = 'Matched';
+      donorModel.save();
+      
+      const emailSubject = 'Blood Donation Appointment Details';
+      const emailBody = `
+                    Dear ${donor.fullName},
+
+                    Thank you for being a valuable donor. You have been matched to donate blood based on a request for ${bloodRequest.emergencyBloodType} blood type.
+
+                    Here are your appointment details:
+                    - Date: ${appointment.date}
+                    - Time: ${appointment.time}
+                    - Hospital: ${appointment.hospital.name}
+
+                    Please make sure to arrive on time and bring a valid ID.
+
+                    Thank you,
+                    Blood-Link Team
+                `;
+
+      await sendEmail(donor.email, emailSubject, emailBody);
+
+
+      return res.status(200).json({
+        message: 'Donor matched with appointment and email sent successfully',
+        donor: donor
+      });
+
+    }
+    else {
+      return res.status(200).json({ message: 'no appointment found' });
+    }
+  }
+
+})

@@ -150,7 +150,7 @@ export const forgotPassword = asyncWrapper(async (req, res, next) => {
   user.resetToken = resetToken;
   user.resetTokenExpires = Date.now() + (10 * 60 * 1000);
   await user.save();
-  const link = `https://blood-link-fe.onrender.com/ConfirmNewPassword?token=${resetToken}&id=${user.id}`;
+  const link = `http://localhost:5173/ConfirmNewPassword?token=${resetToken}&id=${user.id}`;
   const emailBody = `Click on the link bellow to reset your password\n\n${link}`;
 
   await sendEmail(req.body.email, "Reset your password", emailBody);

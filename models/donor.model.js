@@ -56,7 +56,7 @@ const donorSchema =  mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'confirmed', 'rejected'],
+        enum: ['pending', 'confirmed', 'Matched', 'rejected'],
         default: 'pending'
     },
     rejectionReason: {
@@ -77,6 +77,9 @@ donorSchema.pre('save', function (next) {
             donor.gender = 'Male';
         } else if (sixthDigit === '7') {
             donor.gender = 'Female';
+        }
+        else {
+            donor.gender = 'Other';
         }
     }
 
