@@ -4,7 +4,6 @@ import {
     deleteHospital,
     allHospitals,
     addHospital,
-    login,
     updateHospitalById,
     getHospitalByDistrict,
     getHospitalByHospitalCode,
@@ -25,7 +24,6 @@ export const hospitalRoute = express.Router();
 hospitalRoute.delete('/delete/:id', deleteHospital);
 hospitalRoute.get('/list', allHospitals)
 hospitalRoute.post('/add', hospitalValidation, addHospital)
-hospitalRoute.post('/login', login)
 hospitalRoute.put('/update', hospitalValidation, updateHospitalById)
 hospitalRoute.get('/getHospitalsByStatus/:status', getHospitalByStatus)
 hospitalRoute.get('/getHospitalsByProvince/:province', getHospitalByProvince)

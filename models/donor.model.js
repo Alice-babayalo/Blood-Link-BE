@@ -56,7 +56,7 @@ const donorSchema =  mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'confirmed', 'Matched', 'rejected'],
+        enum: ['pending', 'confirmed', 'matched', 'rejected'],
         default: 'pending'
     },
     rejectionReason: {

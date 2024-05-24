@@ -1,6 +1,7 @@
 import donorModel from "../models/donor.model.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
+import asyncWrapper from "../middleware/async.js";
 
 
 
@@ -12,7 +13,6 @@ export const createDonor = async (req, res, next) => {
     }
   try {
     const { fullName, mobileNumber, nationalID, email, province, district, sector, bloodGroup, age, gender,weight } = req.body;
-    
     const donor = new donorModel(req.body);
 
 
@@ -70,3 +70,18 @@ export const deleteDonor = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+
+export const listOfMatchedDonors = asyncWrapper(async (req, res, next) => {
+  const list = await donorModel.find({
+    status: 'matched'
+  })
+  if (!list) {
+    return res.status(404).json({ message: 'No donors who were matched to the hospitals yet' });
+  }
+
+  return res.status(200).json({
+    message: "Donors found",
+    list
+  })
+})
