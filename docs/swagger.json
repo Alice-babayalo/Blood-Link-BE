@@ -380,6 +380,58 @@
                 }
               }
         },
+        "/donor/search-hospital":{
+            "get": {
+                "summary": "search a hospital",
+                "description": "search a hospital using any piece of information about the hospital",
+                "tags": ["Hospital"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the hospital",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "hospital found"
+                  },
+                  "404": {
+                    "description": "hospital not found"
+                  }
+                }
+              }
+        },
+        "/hospital/search-bloodRequest":{
+            "get": {
+                "summary": "search blood request",
+                "description": "search a blood request using any piece of information about the blood request",
+                "tags": ["Blood-Request"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the blood request",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "blood request found"
+                  },
+                  "404": {
+                    "description": "blood request not found"
+                  }
+                }
+              }
+        },
         "/donor/create": {
             "post": {
                 "summary": "Adding a donor",
@@ -494,7 +546,7 @@
         "/donor/deleteDonor/{id}":{
             "delete": {
                 "summary": "Delete a donor",
-                "description": "Admin may want ot delete a donor by id",
+                "description": "Admin may want to delete a donor by id",
                 "tags": ["Donor"],
                 "parameters": [
                   {
@@ -510,6 +562,32 @@
                 "responses": {
                   "204": {
                     "description": "donor deleted"
+                  },
+                  "404": {
+                    "description": "donor not found"
+                  }
+                }
+              }
+        },
+        "/donor/search-donor":{
+            "get": {
+                "summary": "search a donor",
+                "description": "search a donor using any piece of information about the donor",
+                "tags": ["Donor"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the donor",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "donor found"
                   },
                   "404": {
                     "description": "donor not found"
