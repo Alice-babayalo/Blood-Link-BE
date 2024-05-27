@@ -10,7 +10,7 @@ import asyncWrapper from "./async.js";
   // Convert the extracted string to an integer
   const yearOfBirth = parseInt(yearStr, 10);
   
-    const currentYear = new Date().getFullYear();
+    const currentYear =  new Date().getFullYear();
   
     const ageDifference = currentYear - yearOfBirth;
     if (ageDifference<0){

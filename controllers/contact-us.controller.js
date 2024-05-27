@@ -55,4 +55,30 @@ export const deleteMessage = asyncWrapper(async (req, res, next) => {
     message: "Message deleted successfully",
     msge
   })
-})
+});
+
+
+export const searchMessages = async (req, res) => {
+  try {
+    const { name, email, date } = req.query;
+
+    const query = {};
+
+    if (name) {
+      query.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+    }
+
+    if (email) {
+      query.email = { $regex: email, $options: 'i' }; // Case-insensitive search
+    }
+
+    if (date) {
+      query.createdAt = { $gte: new Date(date) };
+    }
+
+    const messages = await contactModel.find(query);
+    res.status(200).json(messages);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

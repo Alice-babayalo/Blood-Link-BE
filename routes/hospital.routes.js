@@ -11,10 +11,11 @@ import {
     getHospitalByProvince,
     getHospitalByStatus,
     getHospitalBySector,
-    listHospitals
+    listHospitals,
+    searchHospitals
 } from "../controllers/hospital.controller.js";
 import { hospitalValidation } from '../utils/validation.js';
-import { requestBlood, viewAllRequests,approveRequest } from '../controllers/blood.request.js';
+import { requestBlood, viewAllRequests,approveRequest, searchRequests } from '../controllers/blood.request.js';
 import authMiddleware from '../middleware/authorization.js'
 
 export const hospitalRoute = express.Router();
@@ -36,3 +37,5 @@ hospitalRoute.post('/bloodRequest', requestBlood)
 hospitalRoute.get('/listOfBloodRequest', viewAllRequests)
 hospitalRoute.get('/approveRequest/:id', approveRequest)
 hospitalRoute.get('/namesOfAllHospitals', listHospitals)
+hospitalRoute.get('/search-hospital',searchHospitals)
+hospitalRoute.get('/search-bloodRequest',searchRequests)
