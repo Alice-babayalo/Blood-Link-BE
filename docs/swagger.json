@@ -462,7 +462,7 @@
                 "summary": "Update donor details",
                 "description": "The donor may want to change some information about the donor details",
                 "tags": [
-                    "Hospital"
+                    "Donor"
                 ],
                 "parameters": [
                     {
@@ -516,6 +516,33 @@
                   }
                 }
               }
+        },
+        "/donor/matchedDonors": {
+            "get": {
+                "summary": "List all dondors who were matched to their donoation hospitals",
+                "description": "The list of all dondors who were matched to their donoation hospital is retrieved from the database",
+                "tags": [
+                    "Donor"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all dondors who were matched to their donoation hospital",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "matched donors found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
         },
         "/appointment/createAppointment": {
             "post": {

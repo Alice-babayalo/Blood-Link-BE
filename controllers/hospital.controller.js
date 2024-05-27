@@ -5,6 +5,8 @@ import asyncWrapper from '../middleware/async.js';
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
 import { sendEmail } from '../utils/sendEmail.js';
+import { otpGenerator } from '../utils/otp.js';
+import userModel from '../models/user.model.js';
 
 
 export const hospitalRegister = asyncWrapper(async (req, res, next) => {
@@ -56,22 +58,20 @@ export const allHospitals = asyncWrapper(async (req, res, next) => {
 export const addHospital = asyncWrapper(async (req, res, next) => {
     const { name, hospitalCode, email, phone, province, district, sector } = req.body;
 
-    // Check if hospital with the given email already exists
+
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
         return next(new BadRequestError(errors.array()[0].msg));
     }
 
-    // Generate random password
-    // const password = Math.random().toString(36).slice(-8); // Temporary password - you may want to use a stronger password generator
+
     const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz@!$*0123456789';
     let password = ''
     let length = 8;
     for (let i = 0; i < length; i++) {
-        // the lengthe of the password is assigned to the length in the parameter
         password += characters.charAt(Math.floor(Math.random() * characters.length));
     }
-    // Create a new hospital
+
     const hashedPassword = await bcryptjs.hash(password, 15);
 
     const newHospital = new hospitalModel(req.body);
@@ -79,7 +79,17 @@ export const addHospital = asyncWrapper(async (req, res, next) => {
     newHospital.status = 'Approved';
     await newHospital.save();
 
-    // Send email with login email and password
+    const newUser = new userModel({
+        username: name,
+        email,
+        password: hashedPassword,
+        role: 'hospital',
+        verified: true,
+        otp: otpGenerator()
+    });
+
+    await newUser.save();
+
     await sendEmail(
         email,
         "Welcome to Blood Link System",
@@ -91,29 +101,6 @@ export const addHospital = asyncWrapper(async (req, res, next) => {
      });
 });
 
-
-export const login = asyncWrapper(async (req, res, next) => {
-    const { email, password } = req.body;
-
-    // Find the hospital by email
-    const hospital = await hospitalModel.findOne({ email });
-
-    // If hospital not found
-    if (!hospital) {
-        return res.status(404).json({ message: 'Hospital not found! make sure you have an approval from RBC' });
-    }
-
-    // Check if password is correct
-    const isPasswordValid = await bcrypt.compare(password, hospital.password);
-    if (!isPasswordValid) {
-        return res.status(401).json({ message: 'Invalid password' });
-    }
-
-    // Generate JWT token
-    const token = jwt.sign({ id: hospital._id }, process.env.JWT_SECRET_KEY, { expiresIn: '1h' });
-
-    res.status(200).json({ message: 'Login successful!', token });
-});
 
 export const getHospitalByStatus = asyncWrapper(async (req, res, next) => {
 
