@@ -5,9 +5,8 @@ import {
   getDonorById,
  updateDonor,
  deleteDonor,
- searchDonors
-
- listOfMatchedDonors
+ searchDonors,
+listOfMatchedDonors
 
   
 } from '../controllers/donor.controller.js';
