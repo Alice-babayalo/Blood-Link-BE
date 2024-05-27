@@ -205,3 +205,55 @@ export const listHospitals = asyncWrapper(async (req, res, next) => {
     const hospitals = await hospitalModel.find({}, 'name');
     res.status(200).json({message:"A list of all hospitals is retrieved successfully" ,hospitals});
 });
+
+
+
+
+export const searchHospitals = async (req, res) => {
+  try {
+    const { name, email, phone, hospitalCode, province, district, sector, status, role } = req.query;
+
+    const query = {};
+
+    if (name) {
+      query.name = { $regex: name, $options: 'i' }; // Case-insensitive search
+    }
+
+    if (email) {
+      query.email = { $regex: email, $options: 'i' }; // Case-insensitive search
+    }
+
+    if (phone) {
+      query.phone = phone;
+    }
+
+    if (hospitalCode) {
+      query.hospitalCode = hospitalCode;
+    }
+
+    if (province) {
+      query.province = province;
+    }
+
+    if (district) {
+      query.district = district;
+    }
+
+    if (sector) {
+      query.sector = sector;
+    }
+
+    if (status) {
+      query.status = status;
+    }
+
+    if (role) {
+      query.role = role;
+    }
+
+    const hospitals = await hospitalModel.find(query);
+    res.status(200).json(hospitals);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};

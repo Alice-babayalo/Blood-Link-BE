@@ -69,4 +69,32 @@ export const approveRequest = asyncWrapper( async (req,res,next)=>{
         subject,
         emailBody
     )
-})
+});
+export const searchRequests = async (req, res) => {
+    try {
+      const { emergencyBloodType, hospital, quantity, status } = req.query;
+  
+      const query = {};
+  
+      if (emergencyBloodType) {
+        query.emergencyBloodType = emergencyBloodType;
+      }
+  
+      if (hospital) {
+        query.hospital = hospital; // This should be the ObjectId of the hospital
+      }
+  
+      if (quantity) {
+        query.quantity = quantity;
+      }
+  
+      if (status) {
+        query.status = status;
+      }
+  
+      const requests = await requestModel.find(query).populate('hospital', 'name'); // Populating hospital name
+      res.status(200).json(requests);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  };

@@ -70,3 +70,50 @@ export const deleteDonor = async (req, res) => {
     res.status(500).json({ error: error.message });
   }
 };
+
+export const searchDonors = async (req, res) => {
+  try {
+    const {fullName, bloodGroup, province, district, sector,age,gender,weight, availabilityDate } = req.query;
+
+    const query = {};
+    if (fullName) {
+      query.fullName = { $regex: fullName, $options: 'i' };
+      }
+
+    if (bloodGroup) {
+      query.bloodGroup = bloodGroup;
+    }
+
+    if (province) {
+      query.province = province;
+    }
+
+    if (district) {
+      query.district = district;
+    }
+
+    if (sector) {
+      query.sector = sector;
+    }
+    if (age) {
+      query.age = age;
+    }
+
+    if (gender) {
+      query.gender = gender;
+    }
+
+    if (weight) {
+      query.weight = weight;
+    }
+
+    if (availabilityDate) {
+      query.donationAvailability = { $gte: new Date(availabilityDate) };
+    }
+
+    const donors = await donorModel.find(query);
+    res.status(200).json(donors);
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
