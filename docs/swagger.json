@@ -241,6 +241,34 @@
                 }
             }
         },
+        "/hospital//onehospitalRequests/{hospital}": {
+            "get": {
+                "summary": "List all blood requested by a specific hospital",
+                "description": "The list of all blood requested by a specific hospital according to the id of the hospital",
+                "tags": [
+                    "Blood-Request"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"hospital id",
+                        "description": "ID of the hospital to retrieve all the blood requests requested",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404":{
+                        "description":"Not found"
+                    }
+                }
+            }
+        },
         "/hospital/update/{id}": {
             "put": {
                 "summary": "Update hospital details",

@@ -98,3 +98,19 @@ export const searchRequests = async (req, res) => {
       res.status(500).json({ error: error.message });
     }
   };
+
+export const getReqeustsOfAHospital = asyncWrapper( async (req, res, next) => {
+
+  const oneHospitalRequests = await requestModel.findById(req.params.hospital).populate('hospital');
+  if(!oneHospitalRequests){
+    return res.status(404).json({
+      message: "There is no requests from the hospital with the id"
+    });
+  }
+  return res.status(200).json({
+    message: "requests retrieved successfully!",
+    numberOfRequests: oneHospitalRequests.length,
+    oneHospitalRequests
+  });
+
+})

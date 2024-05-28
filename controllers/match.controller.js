@@ -92,7 +92,7 @@ export const perfectMatch = asyncWrapper(async (req, res, next) => {
           - Hospital: ${appointment.hospital.name}
           - Location: ${appointment.hospital.province}, ${appointment.hospital.district}, ${appointment.hospital.sector}
 
-          Please make sure to arrive on time and bring a valid ID.
+          Please make sure to arrive on time and bring a valid national ID.
 
           Thank you,
           Blood-Link Team
@@ -158,9 +158,8 @@ export const perfectMatch = asyncWrapper(async (req, res, next) => {
               status: 'confirmed'
             });
 
-            console.log(newAppointment);
-
             await newAppointment.save();
+            const populatedAppointment = await appointmentModel.findById(newAppointment._id).populate('hospital');
 
             // Update blood request status and decrement quantity
             bloodRequest.status = 'Matched';
@@ -172,19 +171,9 @@ export const perfectMatch = asyncWrapper(async (req, res, next) => {
 
             // Update donor status and last donation date
             donor.status = 'matched';
-            donor.lastDonationDate = newAppointment.date;
+            donor.lastDonationDate = populatedAppointment.date;
             await donor.save();
 
-            
-            const donationDate= newAppointment.date.toDateString();
-            const donationTime= newAppointment.time;
-            const donationHospital = newAppointment.hospital.names;
-            const donationProvince = newAppointment.hospital.province;
-            const donationDistrict = newAppointment.hospital.district;
-            const donationSector = newAppointment.hospital.sector;
-
-
-            console.log("name:"+donationHospital+"\nprovince:"+donationProvince+"\ndistrict:"+donationDistrict+"\nsector:"+donationSector+"\ndate:"+donationDate+"\ntime:"+donationTime)
             // Send email to the donor
             const emailSubject = 'Blood Donation Appointment Details';
             const emailBody = `
@@ -193,12 +182,12 @@ export const perfectMatch = asyncWrapper(async (req, res, next) => {
               Thank you for being a valuable donor. You have been matched to donate blood based on a request for ${bloodRequest.emergencyBloodType} blood type.
 
               Here are your appointment details:
-              - Date: ${donationDate}
-              - Time: ${donationTime}
-              - Hospital: ${donationHospital}
-              - Location: ${donationProvince}, ${donationDistrict}, ${donationSector}
+              - Date: ${populatedAppointment.date.toDateString()}
+              - Time: ${populatedAppointment.time}
+              - Hospital: ${populatedAppointment.hospital.name}
+              - Location: ${populatedAppointment.hospital.province}, ${populatedAppointment.hospital.district}, ${populatedAppointment.hospital.sector}
 
-              Please make sure to arrive on time and bring a valid ID.
+              Please make sure to arrive on time and bring a valid national ID.
 
               Thank you,
               Blood-Link Team
