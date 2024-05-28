@@ -159,7 +159,7 @@ export const forgotPassword = asyncWrapper(async (req, res, next) => {
   });
 })
 //reset password
-export const resetPassword = asyncWrapper(async (req, res) => {
+export const resetPassword = asyncWrapper(async (req, res, next) => {
   const token = req.params.resetToken;
   const user = await userModel.findOne({ resetToken: token });
   if (!user) {

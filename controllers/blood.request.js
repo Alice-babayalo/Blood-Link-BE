@@ -45,7 +45,7 @@ export const viewAllRequests = asyncWrapper(async (req, res, next) => {
     })
 })
 
-export const approveRequest = asyncWrapper( async (req,res,next)=>{
+export const approveRequest = asyncWrapper( async (req, res, next)=>{
 
     const approveReq = await requestModel.findById(req.params.id).populate("hospital");
     if(!approveReq){
