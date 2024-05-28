@@ -12,7 +12,6 @@ listOfMatchedDonors
 } from '../controllers/donor.controller.js';
 import {createDonorValidationRules } from '../utils/validation.js';
 import { getAge } from '../middleware/helperFuntion.js';
-import { perfectMatch } from '../controllers/match.controller.js';
 import authMiddleware from '../middleware/authorization.js';
 
 
@@ -29,7 +28,7 @@ router.delete('/deleteDonor/:id', deleteDonor);
 
 router.get('/search-donor',searchDonors);
 
-router.get('/matchedDonors', perfectMatch, listOfMatchedDonors)
+router.get('/matchedDonors', listOfMatchedDonors)
 
 
 export default router;

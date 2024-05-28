@@ -3,7 +3,6 @@ import hospitalModel from "../models/hospital.model.js";
 import jwt from "jsonwebtoken"
 import asyncWrapper from "../middleware/async.js";
 import bcryptjs from 'bcryptjs';
-import config from "../configs/index.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from "express-validator";
 import { sendEmail } from "../utils/sendEmail.js";

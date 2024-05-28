@@ -597,7 +597,7 @@
         },
         "/donor/matchedDonors": {
             "get": {
-                "summary": "List all dondors who were matched to their donoation hospitals",
+                "summary": "List all dondors who were matched to their donation hospitals",
                 "description": "The list of all dondors who were matched to their donoation hospital is retrieved from the database",
                 "tags": [
                     "Donor"
