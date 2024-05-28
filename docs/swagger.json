@@ -845,31 +845,6 @@
                 }
             }
         },
-        "/admin/match-donor":{
-            "post": {
-                "summary": "The administrator matches the donor with the hospital",
-                "description": "The administrator matches the donor with the hospital",
-                "tags": [
-                    "admin"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/match"
-                        },
-                        "required": true,
-                        "description": "Enter your essential credentials"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
         "/contact-us/listMessage": {
             "get": {
                 "summary": "List all user messages",
