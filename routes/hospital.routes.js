@@ -15,7 +15,7 @@ import {
     searchHospitals
 } from "../controllers/hospital.controller.js";
 import { hospitalValidation } from '../utils/validation.js';
-import { requestBlood, viewAllRequests,approveRequest, searchRequests } from '../controllers/blood.request.js';
+import { requestBlood, viewAllRequests,approveRequest, searchRequests, getReqeustsOfAHospital } from '../controllers/blood.request.js';
 import authMiddleware from '../middleware/authorization.js'
 
 export const hospitalRoute = express.Router();
@@ -39,3 +39,4 @@ hospitalRoute.get('/approveRequest/:id', approveRequest)
 hospitalRoute.get('/namesOfAllHospitals', listHospitals)
 hospitalRoute.get('/search-hospital',searchHospitals)
 hospitalRoute.get('/search-bloodRequest',searchRequests)
+hospitalRoute.get('/onehospitalRequests/:hospital', getReqeustsOfAHospital)

@@ -241,6 +241,34 @@
                 }
             }
         },
+        "/hospital//onehospitalRequests/{hospital}": {
+            "get": {
+                "summary": "List all blood requested by a specific hospital",
+                "description": "The list of all blood requested by a specific hospital according to the id of the hospital",
+                "tags": [
+                    "Blood-Request"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"hospital id",
+                        "description": "ID of the hospital to retrieve all the blood requests requested",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404":{
+                        "description":"Not found"
+                    }
+                }
+            }
+        },
         "/hospital/update/{id}": {
             "put": {
                 "summary": "Update hospital details",
@@ -380,6 +408,58 @@
                 }
               }
         },
+        "/donor/search-hospital":{
+            "get": {
+                "summary": "search a hospital",
+                "description": "search a hospital using any piece of information about the hospital",
+                "tags": ["Hospital"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the hospital",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "hospital found"
+                  },
+                  "404": {
+                    "description": "hospital not found"
+                  }
+                }
+              }
+        },
+        "/hospital/search-bloodRequest":{
+            "get": {
+                "summary": "search blood request",
+                "description": "search a blood request using any piece of information about the blood request",
+                "tags": ["Blood-Request"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the blood request",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "blood request found"
+                  },
+                  "404": {
+                    "description": "blood request not found"
+                  }
+                }
+              }
+        },
         "/donor/create": {
             "post": {
                 "summary": "Adding a donor",
@@ -494,7 +574,7 @@
         "/donor/deleteDonor/{id}":{
             "delete": {
                 "summary": "Delete a donor",
-                "description": "Admin may want ot delete a donor by id",
+                "description": "Admin may want to delete a donor by id",
                 "tags": ["Donor"],
                 "parameters": [
                   {
@@ -517,9 +597,35 @@
                 }
               }
         },
+        "/donor/search-donor":{
+            "get": {
+                "summary": "search a donor",
+                "description": "search a donor using any piece of information about the donor",
+                "tags": ["Donor"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the donor",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "donor found"
+                  },
+                  "404": {
+                    "description": "donor not found"
+                  }
+                }
+              }
+        },
         "/donor/matchedDonors": {
             "get": {
-                "summary": "List all dondors who were matched to their donoation hospitals",
+                "summary": "List all dondors who were matched to their donation hospitals",
                 "description": "The list of all dondors who were matched to their donoation hospital is retrieved from the database",
                 "tags": [
                     "Donor"
@@ -730,31 +836,6 @@
                         },
                         "required": true,
                         "description": "Enter your email address"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
-        "/admin/match-donor":{
-            "post": {
-                "summary": "The administrator matches the donor with the hospital",
-                "description": "The administrator matches the donor with the hospital",
-                "tags": [
-                    "admin"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/match"
-                        },
-                        "required": true,
-                        "description": "Enter your essential credentials"
                     }
                 ],
                 "responses": {
