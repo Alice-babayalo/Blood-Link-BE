@@ -19,9 +19,8 @@ app.use(express.json())
 app.use('/api', routes)
 app.use(cookieParser());
 app.use('/api-documentation', swaggerUi.serve, swaggerUi.setup(documentation))
-app.use(perfectMatch)
 
-
+perfectMatch();
 
 
 
