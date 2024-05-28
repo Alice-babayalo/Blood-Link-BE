@@ -703,7 +703,7 @@
             }      
         },
         "/appointment/getappointments/{id}": {
-            "post": {
+            "get": {
                 "summary": "find donor",
                 "description": "Find the donor by the appointment id",
                 "tags": [
