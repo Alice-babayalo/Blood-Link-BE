@@ -703,7 +703,7 @@
             }      
         },
         "/appointment/getappointments/{id}": {
-            "post": {
+            "get": {
                 "summary": "find donor",
                 "description": "Find the donor by the appointment id",
                 "tags": [
@@ -714,6 +714,31 @@
                         "in":"path",
                         "name":"id",
                         "description": "ID of the appointment to be found",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/getAppointmentsOfAHospital/{hospitalId}": {
+            "get": {
+                "summary": "find appointments of one hospital",
+                "description": "Find all appointments of a specific hospital by the id of the hospital in the appointment database",
+                "tags": [
+                    "Appointment"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"hospital id",
+                        "description": "ID of the appointments of the hospital to be found",
                         "required": true,
                         "schema": {
                           "type": "string"

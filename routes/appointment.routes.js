@@ -5,7 +5,8 @@ import {
   getAppointmentById,
   confirmAppointment,
   rejectAppointment,
-  updateAppointment
+  updateAppointment,
+  listOfappointmentsOfOneHospital
 } from '../controllers/appointment.controller.js';
 import { appointmentValidationRules} from '../utils/validation.js';
 import { validateAppointmentDate } from '../middleware/helperFuntion.js';
@@ -18,6 +19,7 @@ const appointroute = express.Router();
 appointroute.post('/createAppointment', appointmentValidationRules, validateAppointmentDate, createAppointment);
 appointroute.get('/getAppointments', listAppointments);
 appointroute.get('/getappointments/:id', getAppointmentById);
+appointroute.get('/getAppointmentsOfAHospital/:hospitalId', listOfappointmentsOfOneHospital)
 appointroute.put('/appointments/:id/confirm', confirmAppointment);
 appointroute.put('/appointments/:id/reject', rejectAppointment);
 appointroute.put('/updateappointment/:id', appointmentValidationRules, validateAppointmentDate, updateAppointment);
