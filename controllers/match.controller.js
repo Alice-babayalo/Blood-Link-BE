@@ -39,10 +39,10 @@ export const perfectMatch = asyncWrapper(async (req, res, next) => {
 
       // Check if the donor has donated within the last 3 months
       const threeMonthsAgo = new Date();
-      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 2);
 
       if (donor.lastDonationDate && donor.lastDonationDate > threeMonthsAgo) {
-        continue;
+        return res.status(200).json({ message: "You arleady donated on " + donor.lastDonationDate + "\n You will be allowed to donate once more after two months from the last time you donated" });
       }
 
       const appointments = await appointmentModel.find({
@@ -117,10 +117,10 @@ export const perfectMatch = asyncWrapper(async (req, res, next) => {
 
         // Check if the donor has donated within the last 3 months
         const threeMonthsAgo = new Date();
-        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 3);
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 2);
 
         if (donor.lastDonationDate && donor.lastDonationDate > threeMonthsAgo) {
-          continue;
+          return res.status(200).json({ message: "You arleady donated on " + donor.lastDonationDate + "\n You will be allowed to donate once more after two months from the last time you donated" });
         }
 
         // Find hospitals in the same sector as the donor

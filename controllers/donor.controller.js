@@ -25,7 +25,7 @@ export const createDonor = async (req, res, next) => {
 
 export const listDonors = async (req, res) => {
   try {
-    const appointments = await donorModel.find();
+    const appointments = await donorModel.find({ status: { $ne: 'matched' } });
     res.status(200).json(appointments);
   } catch (error) {
     res.status(500).json({ error: error.message });
@@ -130,6 +130,7 @@ export const listOfMatchedDonors = asyncWrapper(async (req, res, next) => {
 
   return res.status(200).json({
     message: "Matched donors found",
+    numberOfMatchedDonors: list.length,
     list
   })
 })
