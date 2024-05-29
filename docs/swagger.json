@@ -5,7 +5,7 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "blood-link-be.onrender.com",
+    "host": "localhost:10000",
     "basePath": "/api",
     "schemes": [
         "https",
@@ -732,13 +732,38 @@
                 "summary": "find appointments of one hospital",
                 "description": "Find all appointments of a specific hospital by the id of the hospital in the appointment database",
                 "tags": [
-                    "Appointment"
+                    "Hospital"
                 ],
                 "parameters": [
                     {
                         "in":"path",
-                        "name":"hospital id",
+                        "name":"hospitalId",
                         "description": "ID of the appointments of the hospital to be found",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/getAppointmentsOfADonor/{donorId}": {
+            "get": {
+                "summary": "find appointments of one donor",
+                "description": "Find all appointments of a specific donor by the id of the donor in the appointment database",
+                "tags": [
+                    "Donor"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"donorId",
+                        "description": "ID of the appointments of the donor to be found",
                         "required": true,
                         "schema": {
                           "type": "string"
@@ -928,7 +953,7 @@
     "tags": [
         {
             "name":"Blood-Request",
-            "description":"The Hospital request blood from Blood Link by specifying the emergency blood request with the blood type that is very essential"
+            "description":"The hospital request blood from Blood Link by specifying the emergency blood request with the blood type that is very essential"
         },
         {
             "name":"Contact-us",

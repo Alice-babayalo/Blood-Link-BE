@@ -121,3 +121,16 @@ export const listOfappointmentsOfOneHospital = asyncWrapper(async (req, res, nex
     appointments: appointments
   });
 })
+
+export const listOfappointmentsOfOneDonor = asyncWrapper(async (req, res, next) => {
+  const appointments = await appointmentModel.find({ donor: req.params.donorId }).populate('hospital');
+  if(!appointments){
+    return res.status(404).json({ message: 'No appointments found for the donor with the id inputed'});
+  }
+
+  res.status(200).json({
+    message:"Appointments retrieved successfully!",
+    numberOfAppointments: appointments.length,
+    appointments: appointments
+  });
+})
