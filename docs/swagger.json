@@ -5,7 +5,7 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "localhost:10000",
+    "host": "blood-link-be.onrender.com",
     "basePath": "/api",
     "schemes": [
         "https",
