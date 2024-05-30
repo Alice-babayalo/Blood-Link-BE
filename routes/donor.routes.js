@@ -6,7 +6,8 @@ import {
  updateDonor,
  deleteDonor,
  searchDonors,
-listOfMatchedDonors
+listOfMatchedDonors,
+listAllDonors
 
   
 } from '../controllers/donor.controller.js';
@@ -17,10 +18,11 @@ import authMiddleware from '../middleware/authorization.js';
 
 const router = express.Router();
 
-// Routes
+
 //router.use(authMiddleware);
 router.post('/create',createDonorValidationRules, getAge,createDonor);
 router.get('/getDonor', listDonors);
+router.get('/getAllDonor', listAllDonors);
 router.get('/getDonor/:id', getDonorById);
 
 router.put('/updateDonor/:id', createDonorValidationRules, getAge, updateDonor);
