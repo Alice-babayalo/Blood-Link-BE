@@ -2,6 +2,7 @@ import express from 'express';
 import {
   createAppointment,
   listAppointments,
+  listConfirmedAppointments ,
   getAppointmentById,
   confirmAppointment,
   rejectAppointment,
@@ -17,6 +18,7 @@ const appointroute = express.Router();
 
 appointroute.post('/createAppointment', appointmentValidationRules, validateAppointmentDate, createAppointment);
 appointroute.get('/getAppointments', listAppointments);
+appointroute.get('/getComfirmedAppointments', listConfirmedAppointments);
 appointroute.get('/getappointments/:id', getAppointmentById);
 appointroute.put('/appointments/:id/confirm', confirmAppointment);
 appointroute.put('/appointments/:id/reject', rejectAppointment);

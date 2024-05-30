@@ -70,31 +70,36 @@ export const approveRequest = asyncWrapper( async (req,res,next)=>{
         emailBody
     )
 });
-export const searchRequests = async (req, res) => {
-    try {
+export const searchRequests = asyncWrapper(async (req, res, next) => {
+  try {
       const { emergencyBloodType, hospital, quantity, status } = req.query;
-  
       const query = {};
-  
+
       if (emergencyBloodType) {
-        query.emergencyBloodType = emergencyBloodType;
+          query.emergencyBloodType = emergencyBloodType;
       }
-  
+
       if (hospital) {
-        query.hospital = hospital; // This should be the ObjectId of the hospital
+          const hospitalDoc = await hospitalModel.findOne({ name: hospital });
+          if (hospitalDoc) {
+              query.hospital = hospitalDoc._id;
+          } else {
+              return res.status(404).json({ error: 'Hospital not found' });
+          }
       }
-  
+
       if (quantity) {
-        query.quantity = quantity;
+          query.quantity = quantity;
       }
-  
+
       if (status) {
-        query.status = status;
+          query.status = status;
       }
-  
-      const requests = await requestModel.find(query).populate('hospital', 'name'); // Populating hospital name
+
+      const requests = await requestModel.find(query).populate('hospital', 'name');
       res.status(200).json(requests);
-    } catch (error) {
+  } catch (error) {
+      console.log(error);
       res.status(500).json({ error: error.message });
-    }
-  };
+  }
+});

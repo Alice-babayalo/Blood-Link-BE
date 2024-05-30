@@ -73,7 +73,7 @@ export const deleteDonor = async (req, res) => {
 
 export const searchDonors = async (req, res) => {
   try {
-    const {fullName, bloodGroup, province, district, sector,age,gender,weight, availabilityDate } = req.query;
+    const {fullName, bloodGroup, province, district, sector,age,gender,weight,  availabilityDate } = req.query;
 
     const query = {};
     if (fullName) {

@@ -18,7 +18,7 @@ import { get } from 'mongoose';
 const router = express.Router();
 
 // Routes
- //router.use(authMiddleware);
+ // router.use(authMiddleware);
 router.post('/create',createDonorValidationRules, getAge,createDonor);
 router.get('/getDonor', listDonors);
 router.get('/getDonor/:id', getDonorById);
