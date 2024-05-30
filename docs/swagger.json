@@ -487,6 +487,33 @@
         },
         "/donor/getDonor": {
             "get": {
+                "summary": "List all unmatched donors registered",
+                "description": "The list of all hospitals is retrieved from the database",
+                "tags": [
+                    "Donor"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all registered donors",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "donors found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
+        "/donor/getAllDonor": {
+            "get": {
                 "summary": "List all donors registered",
                 "description": "The list of all hospitals is retrieved from the database",
                 "tags": [

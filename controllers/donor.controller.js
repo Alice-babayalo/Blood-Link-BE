@@ -22,11 +22,23 @@ export const createDonor = async (req, res, next) => {
     res.status(500).json({ error: error.message });
   }
 };
+export const listAllDonors = async (req, res) => {
+  try {
+    const appointments = await donorModel.find({});
+    res.status(200).json({
+      numberOfAllDonors: appointments.length,
+      appointments});
+  } catch (error) {
+    res.status(500).json({ error: error.message });
+  }
+};
 
 export const listDonors = async (req, res) => {
   try {
     const appointments = await donorModel.find({ status: { $ne: 'matched' } });
-    res.status(200).json(appointments);
+    res.status(200).json({
+      numberOfAllDonors: appointments.length,
+      appointments});
   } catch (error) {
     res.status(500).json({ error: error.message });
   }
