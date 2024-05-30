@@ -569,6 +569,33 @@
                 }
             }      
         },
+        "/appointment/getComfirmedAppointments": {
+            "get": {
+                "summary": "List all confirmed appointments",
+                "description": "The list of all confirmed appointments is retrieved from the database",
+                "tags": [
+                    "Appointment"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all confirmed appointments",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "appointments found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
+        },
         "/appointment/getappointments/{id}": {
             "post": {
                 "summary": "find donor",
