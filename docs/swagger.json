@@ -5,7 +5,7 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "blood-link-be.onrender.com",
+    "host": "localhost:911",
     "basePath": "/api",
     "schemes": [
         "https",
@@ -1192,7 +1192,7 @@
                     "description":"The blood type of the donor"
                 },
                 "age":{
-                    "type":"Number",
+                    "type":"string",
                     "required":true,
                     "description":"The number of years one has. The minimun value of age acceptable is 18 years of age for the blood transfusion"
                 },
@@ -1203,7 +1203,7 @@
                     "description":"The gender of the donor"
                 },
                 "weight":{
-                    "type":"Number",
+                    "type":"string",
                     "required":true,
                     "description":"The weight of the donor"
                 }
