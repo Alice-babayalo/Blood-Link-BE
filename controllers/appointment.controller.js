@@ -5,6 +5,7 @@ import hospitalModel from "../models/hospital.model.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from 'express-validator';
 import { sendEmail } from "../utils/sendEmail.js";
+import asyncWrapper from "../middleware/async.js";
 
 export const createAppointment = async (req, res, next) => {
   const errors = validationResult(req);
@@ -103,15 +104,6 @@ export const createAppointment = async (req, res, next) => {
         return res.status(404).json({ message: 'Appointment not found' });
       }
       res.status(200).json({ message: 'Appointment updated successfully', appointment });
-    } catch (error) {
-      res.status(500).json({ error: error.message });
-    }
-  };
-
-  export const listConfirmedAppointments = async (req, res) => {
-    try {
-      const confirmedAppointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
-      res.status(200).json(confirmedAppointments);
     } catch (error) {
       res.status(500).json({ error: error.message });
     }

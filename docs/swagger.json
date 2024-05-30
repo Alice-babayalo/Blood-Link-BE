@@ -241,6 +241,34 @@
                 }
             }
         },
+        "/hospital//onehospitalRequests/{hospital}": {
+            "get": {
+                "summary": "List all blood requested by a specific hospital",
+                "description": "The list of all blood requested by a specific hospital according to the id of the hospital",
+                "tags": [
+                    "Blood-Request"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"hospital id",
+                        "description": "ID of the hospital to retrieve all the blood requests requested",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404":{
+                        "description":"Not found"
+                    }
+                }
+            }
+        },
         "/hospital/update/{id}": {
             "put": {
                 "summary": "Update hospital details",
@@ -380,6 +408,58 @@
                 }
               }
         },
+        "/donor/search-hospital":{
+            "get": {
+                "summary": "search a hospital",
+                "description": "search a hospital using any piece of information about the hospital",
+                "tags": ["Hospital"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the hospital",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "hospital found"
+                  },
+                  "404": {
+                    "description": "hospital not found"
+                  }
+                }
+              }
+        },
+        "/hospital/search-bloodRequest":{
+            "get": {
+                "summary": "search blood request",
+                "description": "search a blood request using any piece of information about the blood request",
+                "tags": ["Blood-Request"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the blood request",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "blood request found"
+                  },
+                  "404": {
+                    "description": "blood request not found"
+                  }
+                }
+              }
+        },
         "/donor/create": {
             "post": {
                 "summary": "Adding a donor",
@@ -462,7 +542,7 @@
                 "summary": "Update donor details",
                 "description": "The donor may want to change some information about the donor details",
                 "tags": [
-                    "Hospital"
+                    "Donor"
                 ],
                 "parameters": [
                     {
@@ -494,7 +574,7 @@
         "/donor/deleteDonor/{id}":{
             "delete": {
                 "summary": "Delete a donor",
-                "description": "Admin may want ot delete a donor by id",
+                "description": "Admin may want to delete a donor by id",
                 "tags": ["Donor"],
                 "parameters": [
                   {
@@ -516,6 +596,59 @@
                   }
                 }
               }
+        },
+        "/donor/search-donor":{
+            "get": {
+                "summary": "search a donor",
+                "description": "search a donor using any piece of information about the donor",
+                "tags": ["Donor"],
+                "parameters": [
+                  {
+                    "name": "name, location, description...",
+                    "in": "path",
+                    "description": "any piece of information about the donor",
+                    "required": true,
+                    "schema": {
+                      "type": "string"
+                    }
+                  }
+                ],
+                "responses": {
+                  "200": {
+                    "description": "donor found"
+                  },
+                  "404": {
+                    "description": "donor not found"
+                  }
+                }
+              }
+        },
+        "/donor/matchedDonors": {
+            "get": {
+                "summary": "List all dondors who were matched to their donation hospitals",
+                "description": "The list of all dondors who were matched to their donoation hospital is retrieved from the database",
+                "tags": [
+                    "Donor"
+                ],
+                "responses": {
+                    "200": {
+                        "description": "successfully retrieved a list of all dondors who were matched to their donoation hospital",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "matched donors found"
+                    },
+                    "500": {
+                        "description": "Internal server error"
+                    }
+                }
+            }      
         },
         "/appointment/createAppointment": {
             "post": {
@@ -597,7 +730,7 @@
             }      
         },
         "/appointment/getappointments/{id}": {
-            "post": {
+            "get": {
                 "summary": "find donor",
                 "description": "Find the donor by the appointment id",
                 "tags": [
@@ -608,6 +741,56 @@
                         "in":"path",
                         "name":"id",
                         "description": "ID of the appointment to be found",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/getAppointmentsOfAHospital/{hospitalId}": {
+            "get": {
+                "summary": "find appointments of one hospital",
+                "description": "Find all appointments of a specific hospital by the id of the hospital in the appointment database",
+                "tags": [
+                    "Hospital"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"hospitalId",
+                        "description": "ID of the appointments of the hospital to be found",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    }
+                }
+            }
+        },
+        "/appointment/getAppointmentsOfADonor/{donorId}": {
+            "get": {
+                "summary": "find appointments of one donor",
+                "description": "Find all appointments of a specific donor by the id of the donor in the appointment database",
+                "tags": [
+                    "Donor"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"donorId",
+                        "description": "ID of the appointments of the donor to be found",
                         "required": true,
                         "schema": {
                           "type": "string"
@@ -739,31 +922,6 @@
                 }
             }
         },
-        "/admin/match-donor":{
-            "post": {
-                "summary": "The administrator matches the donor with the hospital",
-                "description": "The administrator matches the donor with the hospital",
-                "tags": [
-                    "admin"
-                ],
-                "parameters": [
-                    {
-                        "in": "body",
-                        "name": "body",
-                        "schema": {
-                            "$ref": "#/definitions/match"
-                        },
-                        "required": true,
-                        "description": "Enter your essential credentials"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Success"
-                    }
-                }
-            }
-        },
         "/contact-us/listMessage": {
             "get": {
                 "summary": "List all user messages",
@@ -822,7 +980,7 @@
     "tags": [
         {
             "name":"Blood-Request",
-            "description":"The Hospital request blood from Blood Link by specifying the emergency blood request with the blood type that is very essential"
+            "description":"The hospital request blood from Blood Link by specifying the emergency blood request with the blood type that is very essential"
         },
         {
             "name":"Contact-us",

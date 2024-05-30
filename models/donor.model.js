@@ -19,7 +19,6 @@ const donorSchema =  mongoose.Schema({
     email: {
         type: String,
         required: true,
-        unique: true,
         match: [/^\S+@\S+\.\S+$/, 'Please enter a valid email address'] // Example validation
     },
     province: { 
@@ -56,11 +55,14 @@ const donorSchema =  mongoose.Schema({
     },
     status: {
         type: String,
-        enum: ['pending', 'confirmed', 'Matched', 'rejected'],
+        enum: ['pending', 'confirmed', 'matched', 'rejected'],
         default: 'pending'
     },
     rejectionReason: {
         type: String
+    },
+    lastDonationDate: {
+        type: Date
     }
 }, {
     timestamps: true

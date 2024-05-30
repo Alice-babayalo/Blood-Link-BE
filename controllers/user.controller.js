@@ -2,7 +2,7 @@ import userModel from "../models/user.model.js";
 import hospitalModel from "../models/hospital.model.js";
 import jwt from "jsonwebtoken";
 import asyncWrapper from "../middleware/async.js";
-import bcryptjs from "bcryptjs";
+import bcryptjs from 'bcryptjs';
 import config from "../configs/index.js";
 import { BadRequestError } from "../errors/index.js";
 import { validationResult } from "express-validator";
@@ -162,7 +162,7 @@ export const forgotPassword = asyncWrapper(async (req, res, next) => {
   });
 });
 //reset password
-export const resetPassword = asyncWrapper(async (req, res) => {
+export const resetPassword = asyncWrapper(async (req, res, next) => {
   const token = req.params.resetToken;
   const user = await userModel.findOne({ resetToken: token });
   if (!user) {

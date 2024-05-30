@@ -2,195 +2,208 @@
 import donorModel from '../models/donor.model.js';
 import appointmentModel from '../models/appointment.model.js';
 import requestModel from '../models/blood.request.model.js';
-import { validationResult } from 'express-validator';
-import { BadRequestError } from '../errors/index.js';
 import asyncWrapper from '../middleware/async.js';
 import { sendEmail } from '../utils/sendEmail.js';
+import hospitalModel from '../models/hospital.model.js';
 
 
-/*
-export const searchAvailableDonors = asyncWrapper (async (req, res, next) => {
-  const { bloodGroup, location, date } = req.query;
-    
-    const donors = await Donor.find({
-      bloodGroup,
-      location,
-      donationAvailability: { $gte: new Date(date) }
-    });
+export const perfectMatch = asyncWrapper(async (req, res, next) => {
+  const bloodRequests = await requestModel.find({ quantity: { $gt: 0 } }).populate('hospital');
 
-    res.status(200).json(donors);
-});
+  for (let i = 0; i < bloodRequests.length; i++) {
+    const bloodRequest = bloodRequests[i];
 
-
-export const mathDonorToRequest = async (req, res) => {
-  const { donorId, requestId } = req.body;
-
-  try {
-    const donor = await donorModel.findById(donorId);
-    const request = await requestModel.findById(requestId).populate('hospital');
-
-    if (!donor || !request) {
-      return res.status(404).json({ message: 'Donor or Request not found' });
+    if (!bloodRequest.hospital) {
+      console.error(`Blood request ${bloodRequest._id} has no associated hospital`);
+      continue;
     }
 
-    const appointment = new appointmentModel({
-      donor: donorId,
-      hospital: request.hospital._id,
-      date: donor.donationAvailability,
-      time: '09:00',
-      status: 'confirmed'
+    const donors = await donorModel.find({
+      bloodGroup: bloodRequest.emergencyBloodType,
+      status: 'pending'
     });
 
-    await appointment.save();
+    if (donors.length === 0) {
+      continue;
+    }
 
-    request.status = 'fulfilled';
-    await request.save();
+    // Iterate through donors and find matching appointments
+    let donorMatched = false;
+    for (let j = 0; j < donors.length; j++) {
+      const donor = donors[j];
 
-    res.status(201).json({ message: 'Donor matched and appointment confirmed', appointment });
-  } catch (error) {
-    res.status(500).json({ error: error.message });
-  }
-};
-
-
-export const matchDonorToRequest = asyncWrapper(async (req, res, next) => {
-  const { requestId, donorId, appointmentId } = req.body;
-
-  // Find the blood request
-  const bloodRequest = await requestModel.findById(requestId).populate('hospital');
-  if (!bloodRequest) {
-      return next(new BadRequestError('Blood request not found'));
-  }
-
-  // Find the donor
-  const donor = await donorModel.findById(donorId);
-  if (!donor) {
-      return next(new BadRequestError('Donor not found'));
-  }
-
-  // Find the appointment
-  const appointment = await appointmentModel.findById(appointmentId).populate('hospital');
-  if (!appointment) {
-      return next(new BadRequestError('Appointment not found'));
-  }
-
-  // Check if the appointment date is in the future
-  const currentDate = new Date();
-  const appointmentDate = new Date(appointment.date);
-
-  if (appointmentDate < currentDate) {
-      return next(new BadRequestError('The appointment date cannot be in the past'));
-  }
-
-  // Update the blood request status to 'Matched'
-  bloodRequest.status = 'Matched';
-  appointment.status = 'confirmed'
-  await bloodRequest.save();
-
-  // Send email to the donor
-  const emailSubject = 'Blood Donation Appointment Details';
-  const emailBody = `
-      Dear ${donor.fullName},
-
-      Thank you for being a valuable donor. You have been matched to donate blood based on a request for ${bloodRequest.emergencyBloodType} blood type.
-
-      Here are your appointment details:
-      - Date: ${appointment.date}
-      - Time: ${appointment.time}
-      - Hospital: ${appointment.hospital.name}
-
-      Please make sure to arrive on time and bring a valid ID.
-
-      Thank you,
-      Blood Donation Team
-  `;
-
-  await sendEmail(donor.email, emailSubject, emailBody);
-
-  res.status(200).json({ message: 'Donor matched with appointment and email sent successfully' });
-
-
-});
-*/
-export const matchDonorsToRequest = asyncWrapper(async (req, res, next) => {
-
-  const { requestId } = req.body;
-
-  const bloodRequest = await requestModel.findById(requestId).populate('hospital');
-  if (!bloodRequest) {
-    return next(new BadRequestError('Hospital blood request not found'));
-  }
-
-
-  const donors = await donorModel.find({
-    bloodGroup: bloodRequest.emergencyBloodType,
-    status: 'pending'
-  });
-
-
-  if (donors.length === 0) {
-    return next(new BadRequestError('There is no donor with the same blood type who is interested in donating blood'));
-  }
-
-
-  for (const donor of donors) {
-    
-    const appointments = await appointmentModel.find({
-      donor: donor._id,
-      hospital: bloodRequest.hospital._id,
-      status: 'pending',
-      date: { $gte: new Date() }
-    }).populate('hospital').populate('donor');
-
-
-    if (appointments.length > 0) {
-      const sortedAppointments = appointments.sort((a, b) => new Date(a.date) - new Date(b.date));
-      const appointment = sortedAppointments[0];
-
-      appointment.status = 'confirmed';
-      await appointment.save();
-
-      bloodRequest.status = 'Matched';
-      bloodRequest.quantity -= 1;
-    
-      if (bloodRequest.quantity <= 0) {
-        return res.status(200).json({message: "Blood not requuested by any hospital"})
+      if (!donor) {
+        console.error(`Donor ${donor._id} is null`);
+        continue;
       }
-      
-      await bloodRequest.save();
 
-      donorModel.status = 'Matched';
-      donorModel.save();
-      
-      const emailSubject = 'Blood Donation Appointment Details';
-      const emailBody = `
-                    Dear ${donor.fullName},
+      // Check if the donor has donated within the last 3 months
+      const threeMonthsAgo = new Date();
+      threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 2);
 
-                    Thank you for being a valuable donor. You have been matched to donate blood based on a request for ${bloodRequest.emergencyBloodType} blood type.
+      if (donor.lastDonationDate && donor.lastDonationDate > threeMonthsAgo) {
+        return res.status(200).json({ message: "You arleady donated on " + donor.lastDonationDate + "\n You will be allowed to donate once more after two months from the last time you donated" });
+      }
 
-                    Here are your appointment details:
-                    - Date: ${appointment.date}
-                    - Time: ${appointment.time}
-                    - Hospital: ${appointment.hospital.name}
+      const appointments = await appointmentModel.find({
+        donor: donor._id,
+        hospital: bloodRequest.hospital._id,
+        status: 'pending',
+        date: { $gte: new Date() }
+      }).populate('hospital').populate('donor');
 
-                    Please make sure to arrive on time and bring a valid ID.
+      if (appointments.length > 0) {
+        // Prioritize appointments based on the earliest date
+        const sortedAppointments = appointments.sort((a, b) => new Date(a.date) - new Date(b.date));
+        const appointment = sortedAppointments[0];
 
-                    Thank you,
-                    Blood-Link Team
-                `;
+        if (!appointment) {
+          console.error(`Appointment for donor ${donor._id} is null`);
+          continue;
+        }
 
-      await sendEmail(donor.email, emailSubject, emailBody);
+        // Update appointment status to 'confirmed'
+        appointment.status = 'confirmed';
+        await appointment.save();
 
+        // Update blood request status and decrement quantity
+        bloodRequest.status = 'Matched';
+        bloodRequest.quantity -= 1;
+        if (bloodRequest.quantity <= 0) {
+          bloodRequest.status = 'Fulfilled';
+        }
+        await bloodRequest.save();
 
-      return res.status(200).json({
-        message: 'Donor matched with appointment and email sent successfully',
-        donor: donor
-      });
+        // Update donor status and last donation date
+        donor.status = 'matched';
+        donor.lastDonationDate = appointment.date;
+        await donor.save();
 
+        // Send email to the donor
+        const emailSubject = 'Blood Donation Appointment Details';
+        const emailBody = `
+          Dear ${donor.fullName},
+
+          Thank you for being a valuable donor. You have been matched to donate blood based on a request for ${bloodRequest.emergencyBloodType} blood type.
+
+          Here are your appointment details:
+          - Date: ${appointment.date}
+          - Time: ${appointment.time}
+          - Hospital: ${appointment.hospital.name}
+          - Location: ${appointment.hospital.province}, ${appointment.hospital.district}, ${appointment.hospital.sector}
+
+          Please make sure to arrive on time and bring a valid national ID.
+
+          Thank you,
+          Blood-Link Team
+        `;
+
+        await sendEmail(donor.email, emailSubject, emailBody);
+
+        donorMatched = true;
+        break;
+      }
     }
-    else {
-      return res.status(200).json({ message: 'no appointment found' });
+
+    // If no matching appointments are found, match donors to their donation hospital based on location
+    if (!donorMatched) {
+      for (let j = 0; j < donors.length; j++) {
+        const donor = donors[j];
+
+        if (!donor) {
+          console.error(`Donor ${donor._id} is null`);
+          continue;
+        }
+
+        // Check if the donor has donated within the last 3 months
+        const threeMonthsAgo = new Date();
+        threeMonthsAgo.setMonth(threeMonthsAgo.getMonth() - 2);
+
+        if (donor.lastDonationDate && donor.lastDonationDate > threeMonthsAgo) {
+          return res.status(200).json({ message: "You arleady donated on " + donor.lastDonationDate + "\n You will be allowed to donate once more after two months from the last time you donated" });
+        }
+
+        // Find hospitals in the same sector as the donor
+        const nearbyHospitals = await hospitalModel.find({
+          sector: donor.sector,
+          status: 'Approved'
+        });
+
+        for (let k = 0; k < nearbyHospitals.length; k++) {
+          const hospital = nearbyHospitals[k];
+
+          if (!hospital) {
+            console.error(`Hospital ${hospital._id} is null`);
+            continue;
+          }
+
+          // Check if there is an existing appointment for the donor
+          const existingAppointment = await appointmentModel.findOne({
+            donor: donor._id,
+            hospital: hospital._id,
+            status: 'pending',
+            date: { $gte: new Date() }
+          }).populate('hospital').populate('donor');
+
+          const today = new Date();
+          const threeDaysLater = new Date(today);
+          threeDaysLater.setDate(today.getDate() + 3);
+
+          if (!existingAppointment) {
+            const newAppointment = new appointmentModel({
+              donor: donor._id,
+              hospital: hospital._id,
+              date: threeDaysLater,
+              time: '09:00 AM',
+              status: 'confirmed'
+            });
+
+            await newAppointment.save();
+            const populatedAppointment = await appointmentModel.findById(newAppointment._id).populate('hospital');
+
+            // Update blood request status and decrement quantity
+            bloodRequest.status = 'Matched';
+            bloodRequest.quantity -= 1;
+            if (bloodRequest.quantity <= 0) {
+              bloodRequest.status = 'Fulfilled';
+            }
+            await bloodRequest.save();
+
+            // Update donor status and last donation date
+            donor.status = 'matched';
+            donor.lastDonationDate = populatedAppointment.date;
+            await donor.save();
+
+            // Send email to the donor
+            const emailSubject = 'Blood Donation Appointment Details';
+            const emailBody = `
+              Dear ${donor.fullName},
+
+              Thank you for being a valuable donor. You have been matched to donate blood based on a request for ${bloodRequest.emergencyBloodType} blood type.
+
+              Here are your appointment details:
+              - Date: ${populatedAppointment.date.toDateString()}
+              - Time: ${populatedAppointment.time}
+              - Hospital: ${populatedAppointment.hospital.name}
+              - Location: ${populatedAppointment.hospital.province}, ${populatedAppointment.hospital.district}, ${populatedAppointment.hospital.sector}
+
+              Please make sure to arrive on time and bring a valid national ID.
+
+              Thank you,
+              Blood-Link Team
+            `;
+
+            await sendEmail(donor.email, emailSubject, emailBody);
+
+            break; // Move to the next blood request after matching a donor
+          }
+        }
+
+        if (bloodRequest.status === 'Fulfilled') {
+          break;
+        }
+      }
     }
   }
-
-})
+  console.log('Matching process completed.');
+});
