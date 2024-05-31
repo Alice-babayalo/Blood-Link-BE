@@ -111,10 +111,17 @@ export const createAppointment = async (req, res, next) => {
 
   export const listConfirmedAppointments = async (req, res) => {
     try {
-      const confirmedAppointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
-      res.status(200).json({
-        numberOfConfirmedAppointments: confirmAppointment.length,
-        confirmedAppointments});
+      const confirmedAppointments = await appointmentModel.find({ status: 'confirmed' })
+      .populate('hospital')
+      .populate('donor');
+
+    // Filter out appointments without donor or hospital
+    const validConfirmedAppointments = confirmedAppointments.filter(appointment => appointment.donor && appointment.hospital);
+
+    res.status(200).json({
+      numberOfConfirmedAppointments: validConfirmedAppointments.length,
+      confirmedAppointments: validConfirmedAppointments
+    });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
