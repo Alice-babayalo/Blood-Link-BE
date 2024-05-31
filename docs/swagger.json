@@ -5,7 +5,7 @@
         "description": "An API for managing sign up, sign in, forgot password and reset password",
         "version": "1.0.0"
     },
-    "host": "blood-link-be.onrender.com",
+    "host": "blood-link-be.onerender.com",
     "basePath": "/api",
     "schemes": [
         "https",
@@ -241,7 +241,7 @@
                 }
             }
         },
-        "/hospital//onehospitalRequests/{hospital}": {
+        "/hospital/onehospitalRequests/{hospital}": {
             "get": {
                 "summary": "List all blood requested by a specific hospital",
                 "description": "The list of all blood requested by a specific hospital according to the id of the hospital",
@@ -251,7 +251,7 @@
                 "parameters": [
                     {
                         "in":"path",
-                        "name":"hospital id",
+                        "name":"hospitalId",
                         "description": "ID of the hospital to retrieve all the blood requests requested",
                         "required": true,
                         "schema": {

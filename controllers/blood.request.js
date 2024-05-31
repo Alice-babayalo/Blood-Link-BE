@@ -105,17 +105,19 @@ export const searchRequests = asyncWrapper(async (req, res, next) => {
 });
 
 export const getReqeustsOfAHospital = asyncWrapper( async (req, res, next) => {
-
-  const oneHospitalRequests = await requestModel.findById(req.params.hospital).populate('hospital');
-  if(!oneHospitalRequests){
-    return res.status(404).json({
-      message: "There is no requests from the hospital with the id"
-    });
+  const hospitalId = req.params.hospital;
+  const requests = await requestModel.find({ hospital: hospitalId }).populate('hospital');
+        
+  if (!requests || requests.length === 0) {
+      return res.status(404).json({
+          message: "There are no requests from the hospital with the specified ID"
+      });
   }
+  
   return res.status(200).json({
-    message: "requests retrieved successfully!",
-    numberOfRequests: oneHospitalRequests.length,
-    oneHospitalRequests
+      message: "Requests retrieved successfully!",
+      numberOfRequests: requests.length,
+      requests
   });
 
 })
