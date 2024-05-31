@@ -241,7 +241,7 @@
                 }
             }
         },
-        "/hospital/onehospitalRequests/{hospital}": {
+        "/hospital/onehospitalRequests/{hospitalId}": {
             "get": {
                 "summary": "List all blood requested by a specific hospital",
                 "description": "The list of all blood requested by a specific hospital according to the id of the hospital",

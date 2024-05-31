@@ -105,7 +105,7 @@ export const searchRequests = asyncWrapper(async (req, res, next) => {
 });
 
 export const getReqeustsOfAHospital = asyncWrapper( async (req, res, next) => {
-  const hospitalId = req.params.hospital;
+  const hospitalId = req.params.hospitalId;
   const requests = await requestModel.find({ hospital: hospitalId }).populate('hospital');
         
   if (!requests || requests.length === 0) {
