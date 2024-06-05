@@ -1,13 +1,13 @@
+
 # Blood-Link-BE
 
-# Blood Link Project
+## Blood Link Project
 
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Node.js CI](https://github.com/Alice-babayalo/Blood-Link-BE/actions/workflows/node.js.yml/badge.svg)](https://github.com/Alice-babayalo/Blood-Link-BE/actions/workflows/node.js.yml)
 
 Blood Link is a life-saving platform designed to streamline the process of blood donation and requests, making it easier for hospitals to manage blood stocks and for donors to contribute to the cause.
 
-## Table of Contents
+### Table of Contents
 - [Features](#features)
 - [How It Works](#how-it-works)
 - [Technologies Used](#technologies-used)
@@ -18,7 +18,7 @@ Blood Link is a life-saving platform designed to streamline the process of blood
 - [Usage](#usage)
 - [License](#license)
 
-## Features
+### Features
 
 - **User Registration:** Donors can register and manage their profiles and hospitals are added by the administrator.
 - **Blood Requests:** Hospitals can create blood requests.
@@ -27,7 +27,7 @@ Blood Link is a life-saving platform designed to streamline the process of blood
 - **Dashboard:** Comprehensive dashboard for hospitals to monitor blood stocks and requests and the administrator dashboard which enable management of donors and hospitals.
 - **Secure:** Secure user authentication and data management.
 
-## How It Works
+### How It Works
 
 1. **Registration:**
    - Donors and hospitals register and create profiles.
@@ -43,7 +43,7 @@ Blood Link is a life-saving platform designed to streamline the process of blood
 6. **Notification System:**
    - Automated notifications for donors and hospitals about appointments and requests.
 
-## Technologies Used
+### Technologies Used
 
 - **Backend:**
   - Node.js
@@ -60,16 +60,16 @@ Blood Link is a life-saving platform designed to streamline the process of blood
 - **Deployment:**
   - Render
 
-## Collaborators
+### Collaborators
 
 - **Alice Babayalo** - [GitHub](https://github.com/Alice-babayalo)
 - **Benigne Niyonizera** - [GitHub](https://github.com/NIYONIZERA)
 
-## Problem Statement
+### Problem Statement
 
 Blood shortages are a critical issue in healthcare, often leading to delayed treatments and surgeries. The traditional process of matching donors to recipients is time-consuming and inefficient.
 
-## Solution
+### Solution
 
 Blood Link aims to solve this problem by:
 - Automating the process of matching donors to blood requests.
@@ -77,15 +77,17 @@ Blood Link aims to solve this problem by:
 - Enabling donors to easily find and schedule donation appointments.
 - Ensuring timely notifications to donors for urgent blood needs.
 
-# Deployed Project links
+## Deployed Project links
 
-- **API Documentation** -
-- **Blood link with Frontend** - 
+- **API Documentation** - [swagger documentation](https://blood-link-be.onrender.com/api-documentation/)
+- **Blood link with Frontend** - [Blood Link](https://blood-link-fe.onrender.com/)
 
-## Installation
+### Installation
 
 To get a local copy up and running, follow these steps:
 
 1. **Clone the repository:**
    ```bash
    git clone https://github.com/Alice-babayalo/Blood-Link-BE.git
+
+# DONATE BLOOD SAVE LIFE!
