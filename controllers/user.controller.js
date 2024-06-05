@@ -123,7 +123,11 @@ export const logIn = asyncWrapper(async (req, res, next) => {
     process.env.JWT_SECRET_KEY,
     { expiresIn: "1h" }
   );
-
+  if(foundUser.role === "hospital"){
+    const hospital = await hospitalModel.findOne({email: foundUser.email})
+    foundUser.hospital = hospital.id;
+    // console.log("founduser id:"+foundUser.id+'\n hospital id: '+foundUser.hospital)
+  }
   res.status(200).json({
     message: "User logged in!",
     token: token,

@@ -36,8 +36,14 @@ export const createAppointment = async (req, res, next) => {
 };  
   export const listAppointments = async (req, res) => {
     try {
-      const appointments = await appointmentModel.find({}).populate('hospital').populate('donor');
-      res.status(200).json(appointments);
+      const Appointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
+
+      const validAppointments = Appointments.filter(appointment => appointment.donor && appointment.hospital);
+  
+      res.status(200).json({
+        numberOfAppointments: validAppointments.length,
+        Appointments: validAppointments
+      });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -111,10 +117,17 @@ export const createAppointment = async (req, res, next) => {
 
   export const listConfirmedAppointments = async (req, res) => {
     try {
-      const confirmedAppointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
-      res.status(200).json({
-        numberOfConfirmedAppointments: confirmAppointment.length,
-        confirmedAppointments});
+      const confirmedAppointments = await appointmentModel.find({ status: 'confirmed' })
+      .populate('hospital')
+      .populate('donor');
+
+    // Filter out appointments without donor or hospital
+    const validConfirmedAppointments = confirmedAppointments.filter(appointment => appointment.donor && appointment.hospital);
+
+    res.status(200).json({
+      numberOfConfirmedAppointments: validConfirmedAppointments.length,
+      confirmedAppointments: validConfirmedAppointments
+    });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -125,11 +138,11 @@ export const listOfappointmentsOfOneHospital = asyncWrapper(async (req, res, nex
   if(!appointments){
     return res.status(404).json({ message: 'No appointments found for the hospital with the id inputed'});
   }
-
+    const validAppointments = appointments.filter(appointment => appointment.donor);
   res.status(200).json({
     message:"Appointments retrieved successfully!",
-    numberOfAppointments: appointments.length,
-    appointments: appointments
+    numberOfAppointments: validAppointments.length,
+    appointments: validAppointments
   });
 })
 
@@ -138,10 +151,11 @@ export const listOfappointmentsOfOneDonor = asyncWrapper(async (req, res, next) 
   if(!appointments){
     return res.status(404).json({ message: 'No appointments found for the donor with the id inputed'});
   }
+  const validAppointments = appointments.filter(appointment => appointment.hospital);
 
   res.status(200).json({
     message:"Appointments retrieved successfully!",
-    numberOfAppointments: appointments.length,
-    appointments: appointments
+    numberOfAppointments: validAppointments.length,
+    appointments: validAppointments
   });
 })
