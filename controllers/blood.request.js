@@ -36,7 +36,7 @@ export const requestBlood = asyncWrapper(async (req, res, next) => {
 export const viewAllRequests = asyncWrapper(async (req, res, next) => {
 
 
-    const allRequests = await requestModel.find({}).populate('hospital');
+    const allRequests = await requestModel.find({status: { $ne: 'Fulfilled' }}).populate('hospital');
 
     res.status(200).json({
         message: "All requests retrieved successfully",
