@@ -36,8 +36,14 @@ export const createAppointment = async (req, res, next) => {
 };  
   export const listAppointments = async (req, res) => {
     try {
-      const appointments = await appointmentModel.find({}).populate('hospital').populate('donor');
-      res.status(200).json(appointments);
+      const Appointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
+
+      const validAppointments = Appointments.filter(appointment => appointment.donor && appointment.hospital);
+  
+      res.status(200).json({
+        numberOfAppointments: validAppointments.length,
+        confirmedAppointments: validAppointments
+      });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
@@ -112,9 +118,12 @@ export const createAppointment = async (req, res, next) => {
   export const listConfirmedAppointments = async (req, res) => {
     try {
       const confirmedAppointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
-      res.status(200).json({
-        numberOfConfirmedAppointments: confirmAppointment.length,
-        confirmedAppointments});
+
+    const validAppointments = confirmedAppointments.filter(appointment => appointment.donor && appointment.hospital);
+    res.status(200).json({
+      numberOfConfirmedAppointments: validAppointments.length,
+      confirmedAppointments: validAppointments
+    });
     } catch (error) {
       res.status(500).json({ error: error.message });
     }
