@@ -42,7 +42,7 @@ export const createAppointment = async (req, res, next) => {
   
       res.status(200).json({
         numberOfAppointments: validAppointments.length,
-        confirmedAppointments: validAppointments
+        Appointments: validAppointments
       });
     } catch (error) {
       res.status(500).json({ error: error.message });
@@ -134,11 +134,11 @@ export const listOfappointmentsOfOneHospital = asyncWrapper(async (req, res, nex
   if(!appointments){
     return res.status(404).json({ message: 'No appointments found for the hospital with the id inputed'});
   }
-
+    const validAppointments = appointments.filter(appointment => appointment.donor);
   res.status(200).json({
     message:"Appointments retrieved successfully!",
-    numberOfAppointments: appointments.length,
-    appointments: appointments
+    numberOfAppointments: validAppointments.length,
+    appointments: validAppointments
   });
 })
 
@@ -147,10 +147,11 @@ export const listOfappointmentsOfOneDonor = asyncWrapper(async (req, res, next) 
   if(!appointments){
     return res.status(404).json({ message: 'No appointments found for the donor with the id inputed'});
   }
+  const validAppointments = appointments.filter(appointment => appointment.hospital);
 
   res.status(200).json({
     message:"Appointments retrieved successfully!",
-    numberOfAppointments: appointments.length,
-    appointments: appointments
+    numberOfAppointments: validAppointments.length,
+    appointments: validAppointments
   });
 })
