@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+import mongoose, { Schema } from "mongoose";
 
 
 const userchema = new mongoose.Schema({
@@ -39,6 +39,10 @@ const userchema = new mongoose.Schema({
   resetTokenExpires: {
     type: String,
     required: false
+  },
+  hospital:{
+    type: Schema.Types.ObjectId,
+    ref: 'Hospital'
   }
 
 }, {
