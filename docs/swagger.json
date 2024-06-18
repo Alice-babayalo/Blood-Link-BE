@@ -269,6 +269,34 @@
                 }
             }
         },
+        "/hospital/getHospital/{id}": {
+            "get": {
+                "summary": "Details of a hospital",
+                "description": "The list of all the information of a specific hospital",
+                "tags": [
+                    "Hospital"
+                ],
+                "parameters": [
+                    {
+                        "in":"path",
+                        "name":"id",
+                        "description": "ID of the hospital to retrieve all the information about the hospital",
+                        "required": true,
+                        "schema": {
+                          "type": "string"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Success"
+                    },
+                    "404":{
+                        "description":"Hospital not found"
+                    }
+                }
+            }
+        },
         "/hospital/update/{id}": {
             "put": {
                 "summary": "Update hospital details",

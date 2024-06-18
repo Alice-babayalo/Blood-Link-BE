@@ -12,7 +12,8 @@ import {
     getHospitalByStatus,
     getHospitalBySector,
     listHospitals,
-    searchHospitals
+    searchHospitals,
+    getHospital
 } from "../controllers/hospital.controller.js";
 import { hospitalValidation } from '../utils/validation.js';
 import { requestBlood, viewAllRequests,approveRequest, searchRequests, getReqeustsOfAHospital } from '../controllers/blood.request.js';
@@ -25,6 +26,7 @@ export const hospitalRoute = express.Router();
 hospitalRoute.delete('/delete/:id', deleteHospital);
 hospitalRoute.get('/list', allHospitals)
 hospitalRoute.post('/add', hospitalValidation, addHospital)
+hospitalRoute.get('/getHospital/:id',getHospital)
 hospitalRoute.put('/update', hospitalValidation, updateHospitalById)
 hospitalRoute.get('/getHospitalsByStatus/:status', getHospitalByStatus)
 hospitalRoute.get('/getHospitalsByProvince/:province', getHospitalByProvince)
