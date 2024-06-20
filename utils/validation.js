@@ -49,13 +49,13 @@ export const createDonorValidationRules =
         body('weight').isInt({ min: 50 }).withMessage('Weight must be at least 50 kg'),
     ];
 
-export const appointmentValidationRules = [
-    body('donor').notEmpty().withMessage('Donor ID is required').isMongoId().withMessage('Invalid Donor ID format'),
-    body('date').notEmpty().withMessage('Date is required').isISO8601().withMessage('Invalid date format'),
-    body('time').notEmpty().withMessage('Time is required').matches(/^([01]\d|2[0-3]):?([0-5]\d)$/).withMessage('Invalid time format'),
-    body('hospital').notEmpty().withMessage('Hospital name is required').isMongoId().withMessage('Invalid Donor ID format'),
-    body('rejectionReason').optional().isString().withMessage('Rejection reason must be a string')
-];
+    export const appointmentValidationRules = [
+        body('donor').notEmpty().withMessage('Donor email is required'),
+        body('date').notEmpty().withMessage('Date is required'),
+        body('time').notEmpty().withMessage('Time is required'),
+        body('hospital').notEmpty().withMessage('Hospital name is required'),
+        body('rejectionReason').optional().isString().withMessage('Rejection reason must be a string')
+    ];
 
 export const contactValidationRules = [
     body('fullName').notEmpty().withMessage('Full name is required'),

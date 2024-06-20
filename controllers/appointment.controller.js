@@ -14,27 +14,55 @@ export const createAppointment = async (req, res, next) => {
   }
 
   try {
-    const { donor, date, time, hospital } = req.body;
+    const { donor: donorEmail, date, time, hospital: hospitalName } = req.body;
 
-    const donorApp = await donorModel.findById(donor);
-    if (!donorApp) {
+    const donor = await donorModel.findOne({ email: donorEmail });
+    if (!donor) {
       return next(new BadRequestError('Donor not found'));
     }
+    const donorId = donor.id;
 
-    const hospitalApp = await hospitalModel.findById(hospital);
-    if (!hospitalApp) {
+    // Find the hospital using the provided name
+    const hospital = await hospitalModel.findOne({ name: hospitalName });
+    if (!hospital) {
       return next(new BadRequestError('Hospital not found'));
     }
+    const hospitalId = hospital.id;
 
-    const appointment = await appointmentModel.create(req.body);
-    
+    const appointment = new appointmentModel({
+      donor: donorId,
+      hospital: hospitalId,
+      date: date,
+      time: time,
+      status: 'confirmed'
+    })
+    await appointment.save();
+
+    const emailSubject = 'Blood Donation Appointment Details';
+        const emailBody = `
+          Dear ${donor.fullName},
+
+          Thank you for being a valuable donor. 
+
+          Here are your appointment details:
+          - Date: ${appointment.date}
+          - Time: ${appointment.time}
+          - Hospital: ${hospital.name}
+          - Location: ${hospital.province}, ${hospital.district}, ${hospital.sector}
+
+          Please make sure to arrive on time and bring a valid national ID.
+
+          Thank you,
+          Blood-Link Team
+        `;
+
+        await sendEmail(donor.email, emailSubject, emailBody);
 
     res.status(201).json({ message: 'Appointment created successfully', appointment });
   } catch (error) {
     next(error);
   }
-};  
-  export const listAppointments = async (req, res) => {
+};  export const listAppointments = async (req, res) => {
     try {
       const Appointments = await appointmentModel.find({ status: 'confirmed' }).populate('hospital').populate('donor');
 
